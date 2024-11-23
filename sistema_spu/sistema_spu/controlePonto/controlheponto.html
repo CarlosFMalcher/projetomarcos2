@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Controle de Ponto - Administrador</title>
+    <style>
+        /* Reset e estilos básicos */
+		* {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background-color: #f9f9f9;
+            color: #333;
+            padding: 20px;
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+            color: #030a23; /* Azul escuro quase preto */
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .section {
+            background: #fff;
+            margin-bottom: 20px;
+            padding: 20px;
+            border-radius: 8px;
+            border: 1px solid #ddd;
+            box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .section h2 {
+            border-bottom: 3px solid #030a23; /* Azul escuro quase preto */
+            margin-bottom: 15px;
+            padding-bottom: 8px;
+            color: #444;
+        }
+
+        .section table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+            color: #444;
+        }
+
+        .section table th,
+        .section table td {
+            padding: 12px;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .section table th {
+            text-align: left;
+            background-color: #030a23; /* Azul escuro quase preto */
+            color: #fff;
+        }
+
+        .section table tbody tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            color: #030a23;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 10px;
+            background: #f9f9f9;
+            color: #333;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        .form-group textarea {
+            resize: none;
+        }
+
+        .buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 15px;
+        }
+
+        button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            background-color: #030a23; /* Azul escuro quase preto */
+            color: #fff;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        button:hover {
+            background-color: #030a23;
+        }
+
+        .back-button {
+            background-color: #030a23bc;
+        }
+
+        .back-button:hover {
+            background-color: #030a23;
+        }
+
+        .filters {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-bottom: 15px;
+        }
+
+        @media (max-width: 768px) {
+            .filters {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="../dashboard/dashboard.html"><button>Voltar</button></a>
+        
+        <h1>Controle de Ponto - Administrador</h1>
+
+        <!-- Monitoramento em Tempo Real -->
+        <div class="section">
+            <h2>Monitoramento em Tempo Real</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Funcionário</th>
+                        <th>Último Ponto</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody id="monitoramento">
+                    <tr>
+                        <td>João Silva</td>
+                        <td>08:15</td>
+                        <td>No Trabalho</td>
+                    </tr>
+                    <tr>
+                        <td>Maria Santos</td>
+                        <td>09:30</td>
+                        <td>Em Intervalo</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Gestão de Registros -->
+        <div class="section">
+            <h2>Gestão de Registros</h2>
+            <div class="filters">
+                <select id="filtro-funcionario">
+                    <option value="">Filtrar por Funcionário</option>
+                    <option value="joao">João Silva</option>
+                    <option value="maria">Maria Santos</option>
+                </select>
+                <select id="filtro-status">
+                    <option value="">Filtrar por Status</option>
+                    <option value="atraso">Atraso</option>
+                    <option value="ausencia">Ausência</option>
+                </select>
+                <input type="date" id="filtro-data-inicio" placeholder="Data Início">
+                <input type="date" id="filtro-data-fim" placeholder="Data Fim">
+                <button onclick="filtrar()">Aplicar Filtros</button>
+            </div>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Data</th>
+                        <th>Funcionário</th>
+                        <th>Entrada</th>
+                        <th>Saída</th>
+                        <th>Total de Horas</th>
+                    </tr>
+                </thead>
+                <tbody id="registros">
+                    <tr>
+                        <td>2024-11-22</td>
+                        <td>João Silva</td>
+                        <td>08:00</td>
+                        <td>17:00</td>
+                        <td>8h</td>
+                    </tr>
+                    <tr>
+                        <td>2024-11-22</td>
+                        <td>Maria Santos</td>
+                        <td>09:00</td>
+                        <td>18:00</td>
+                        <td>8h</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Relatórios -->
+        <div class="section">
+            <h2>Relatórios</h2>
+            <div class="form-group">
+                <label for="relatorio-periodo">Período</label>
+                <input type="date" id="relatorio-inicio">
+                <input type="date" id="relatorio-fim">
+            </div>
+            <div class="form-group">
+                <label for="formato-relatorio">Formato</label>
+                <select id="formato-relatorio">
+                    <option value="pdf">PDF</option>
+                    <option value="excel">Excel</option>
+                    <option value="csv">CSV</option>
+                </select>
+            </div>
+            <button onclick="gerarRelatorio()">Gerar Relatório</button>
+        </div>
+    </div>
+
+    <script>
+        function voltar() {
+            alert("Voltando para o menu anterior...");
+            // Aqui você pode implementar o redirecionamento
+        }
+
+        function filtrar() {
+            alert("Aplicando filtros...");
+            // Implemente a lógica de filtro
+        }
+
+        function gerarRelatorio() {
+            const formato = document.getElementById("formato-relatorio").value;
+            alert(`Gerando relatório em formato ${formato}...`);
+            // Implemente a geração do relatório
+        }
+    </script>
+</body>
+</html>

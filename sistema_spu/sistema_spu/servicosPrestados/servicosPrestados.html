@@ -1,0 +1,568 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Monitoramento de Serviços</title>
+    <style>
+        /* Estilos Gerais */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f7f7f7;
+            color: #1e1e2f;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* Cabeçalho */
+        header {
+            background-color: #1e1e2f;
+            color: #ffffff;
+            padding: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 24px;
+        }
+
+        /* Botão Voltar e Adicionar */
+        .btn-voltar, .btn-adicionar {
+            background-color: #ffffff;
+            color: #1e1e2f;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            text-decoration: none;
+            font-size: 14px;
+        }
+
+        .btn-voltar:hover, .btn-adicionar:hover {
+            background-color: #e0e0e0;
+        }
+
+        /* Container Principal */
+        .container {
+            padding: 20px;
+        }
+
+        /* Menu Lateral */
+        .menu-lateral {
+            width: 200px;
+            background-color: #ffffff;
+            border-right: 1px solid #dcdcdc;
+            float: left;
+            height: calc(100vh - 60px);
+            overflow-y: auto;
+            position: fixed;
+            top: 60px;
+            left: 0;
+        }
+
+        .menu-lateral ul {
+            list-style-type: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .menu-lateral ul li {
+            border-bottom: 1px solid #dcdcdc;
+        }
+
+        .menu-lateral ul li a {
+            display: block;
+            padding: 15px;
+            color: #1e1e2f;
+            text-decoration: none;
+        }
+
+        .menu-lateral ul li a:hover {
+            background-color: #e0e0e0;
+        }
+
+        /* Conteúdo Principal */
+        .conteudo {
+            margin-left: 220px;
+            padding: 20px;
+        }
+
+        /* Seções */
+        .secao {
+            margin-bottom: 30px;
+        }
+
+        .secao h2 {
+            margin-top: 0;
+            border-bottom: 2px solid #1e1e2f;
+            padding-bottom: 5px;
+        }
+
+        /* Tabela */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+        }
+
+        table th, table td {
+            padding: 10px;
+            border: 1px solid #dcdcdc;
+            text-align: left;
+        }
+
+        table th {
+            background-color: #f0f0f0;
+        }
+
+        /* Botões de Ação */
+        .btn-acao {
+            padding: 5px 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 12px;
+            color: #ffffff;
+        }
+
+        .btn-detalhes {
+            background-color: #17a2b8;
+        }
+
+        .btn-editar {
+            background-color: #ffc107;
+        }
+
+        .btn-excluir {
+            background-color: #dc3545;
+        }
+
+        .btn-detalhes:hover {
+            background-color: #138496;
+        }
+
+        .btn-editar:hover {
+            background-color: #e0a800;
+        }
+
+        .btn-excluir:hover {
+            background-color: #c82333;
+        }
+
+        /* Filtros */
+        .filtros {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .filtros label {
+            font-weight: bold;
+            margin-right: 5px;
+        }
+
+        .filtros select,
+        .filtros input {
+            padding: 8px;
+            border: 1px solid #dcdcdc;
+            border-radius: 5px;
+            font-size: 14px;
+        }
+
+        .filtros button {
+            background-color: #1e1e2f;
+            color: #ffffff;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .filtros button:hover {
+            background-color: #3b3b4d;
+        }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0,0,0,0.5);
+        }
+
+        .modal-conteudo {
+            background-color: #ffffff;
+            margin: 5% auto;
+            padding: 20px;
+            border: 1px solid #dcdcdc;
+            border-radius: 5px;
+            width: 50%;
+        }
+
+        .modal-header h2 {
+            margin: 0;
+        }
+
+        .modal-footer {
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .modal-footer button {
+            padding: 8px 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .btn-salvar {
+            background-color: #28a745;
+            color: #ffffff;
+        }
+
+        .btn-cancelar {
+            background-color: #dc3545;
+            color: #ffffff;
+        }
+
+        .btn-salvar:hover {
+            background-color: #218838;
+        }
+
+        .btn-cancelar:hover {
+            background-color: #c82333;
+        }
+
+        /* Formulários */
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            font-weight: bold;
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #dcdcdc;
+            border-radius: 5px;
+            font-size: 14px;
+        }
+
+        .form-group textarea {
+            resize: vertical;
+        }
+
+        /* Dashboard */
+        .dashboard {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .card {
+            background-color: #ffffff;
+            border: 1px solid #dcdcdc;
+            border-radius: 5px;
+            padding: 20px;
+            flex: 1;
+            min-width: 250px;
+            text-align: center;
+        }
+
+        .card h3 {
+            margin: 0;
+            font-size: 18px;
+            color: #1e1e2f;
+        }
+
+        .card p {
+            font-size: 36px;
+            margin: 10px 0 0 0;
+            color: #1e1e2f;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Cabeçalho -->
+    <header>
+        <a href="../dashboard/dashboard.html"><button class="btn-voltar">Voltar</button></a>
+      
+        <h1>Monitoramento de Serviços</h1>
+        <button class="btn-adicionar" onclick="abrirModalPrestador()">+ Novo Prestador</button>
+    </header>
+
+    <!-- Menu Lateral -->
+    <div class="menu-lateral">
+        <ul>
+            <li><a href="#" onclick="mostrarSecao('dashboard')">Dashboard</a></li>
+            <li><a href="#" onclick="mostrarSecao('prestadores')">Prestadores</a></li>
+            <li><a href="#" onclick="mostrarSecao('historico')">Histórico de Serviços</a></li>
+            <li><a href="#" onclick="mostrarSecao('agendamentos')">Agendamentos</a></li>
+            <li><a href="#" onclick="mostrarSecao('relatorios')">Relatórios</a></li>
+        </ul>
+    </div>
+
+    <!-- Conteúdo Principal -->
+    <div class="conteudo">
+        <!-- Dashboard -->
+        <div id="dashboard" class="secao">
+            <h2>Dashboard</h2>
+            <div class="dashboard">
+                <div class="card">
+                    <h3>Prestadores Ativos</h3>
+                    <p id="prestadores-ativos">0</p>
+                </div>
+                <div class="card">
+                    <h3>Serviços Pendentes</h3>
+                    <p id="servicos-pendentes">0</p>
+                </div>
+                <div class="card">
+                    <h3>Contratos a Vencer</h3>
+                    <p id="contratos-vencer">0</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Prestadores -->
+        <div id="prestadores" class="secao" style="display:none;">
+            <h2>Prestadores de Serviços</h2>
+            <!-- Filtros -->
+            <div class="filtros">
+                <div>
+                    <label for="filtro-nome">Nome:</label>
+                    <input type="text" id="filtro-nome" placeholder="Nome do prestador">
+                </div>
+                <div>
+                    <label for="filtro-categoria">Categoria:</label>
+                    <select id="filtro-categoria">
+                        <option value="">Todas</option>
+                        <option value="limpeza">Limpeza</option>
+                        <option value="seguranca">Segurança</option>
+                        <option value="manutencao">Manutenção</option>
+                    </select>
+                </div>
+                <button onclick="filtrarPrestadores()">Aplicar Filtros</button>
+            </div>
+            <!-- Tabela de Prestadores -->
+            <table>
+                <thead>
+                    <tr>
+                        <th>Nome</th>
+                        <th>Categoria</th>
+                        <th>Contato</th>
+                        <th>Ações</th>
+                    </tr>
+                </thead>
+                <tbody id="tabela-prestadores">
+                    <!-- Dados dinâmicos -->
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Histórico de Serviços -->
+        <div id="historico" class="secao" style="display:none;">
+            <h2>Histórico de Serviços</h2>
+            <!-- Filtros -->
+            <div class="filtros">
+                <div>
+                    <label for="filtro-data">Data:</label>
+                    <input type="date" id="filtro-data">
+                </div>
+                <div>
+                    <label for="filtro-status">Status:</label>
+                    <select id="filtro-status">
+                        <option value="">Todos</option>
+                        <option value="concluido">Concluído</option>
+                        <option value="pendente">Pendente</option>
+                        <option value="atrasado">Atrasado</option>
+                    </select>
+                </div>
+                <button onclick="filtrarHistorico()">Aplicar Filtros</button>
+            </div>
+            <!-- Tabela de Histórico -->
+            <table>
+                <thead>
+                    <tr>
+                        <th>Data</th>
+                        <th>Prestador</th>
+                        <th>Serviço</th>
+                        <th>Departamento</th>
+                        <th>Status</th>
+                        <th>Avaliação</th>
+                        <th>Ações</th>
+                    </tr>
+                </thead>
+                <tbody id="tabela-historico">
+                    <!-- Dados dinâmicos -->
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Agendamentos -->
+        <div id="agendamentos" class="secao" style="display:none;">
+            <h2>Agendamentos</h2>
+            <!-- Filtros -->
+            <div class="filtros">
+                <div>
+                    <label for="filtro-data-agendamento">Data:</label>
+                    <input type="date" id="filtro-data-agendamento">
+                </div>
+                <button onclick="filtrarAgendamentos()">Aplicar Filtros</button>
+            </div>
+            <!-- Tabela de Agendamentos -->
+            <table>
+                <thead>
+                    <tr>
+                        <th>Data</th>
+                        <th>Prestador</th>
+                        <th>Serviço</th>
+                        <th>Local</th>
+                        <th>Ações</th>
+                    </tr>
+                </thead>
+                <tbody id="tabela-agendamentos">
+                    <!-- Dados dinâmicos -->
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Relatórios -->
+        <div id="relatorios" class="secao" style="display:none;">
+            <h2>Relatórios</h2>
+            <p>Aqui você pode gerar relatórios detalhados dos serviços prestados.</p>
+            <!-- Implementação futura -->
+        </div>
+    </div>
+
+    <!-- Modal Novo Prestador -->
+    <div id="modalPrestador" class="modal">
+        <div class="modal-conteudo">
+            <div class="modal-header">
+                <h2>Novo Prestador</h2>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="prestador-nome">Nome:</label>
+                    <input type="text" id="prestador-nome">
+                </div>
+                <div class="form-group">
+                    <label for="prestador-cpf">CPF/CNPJ:</label>
+                    <input type="text" id="prestador-cpf">
+                </div>
+                <div class="form-group">
+                    <label for="prestador-contato">Contato:</label>
+                    <input type="text" id="prestador-contato">
+                </div>
+                <div class="form-group">
+                    <label for="prestador-categoria">Categoria:</label>
+                    <select id="prestador-categoria">
+                        <option value="limpeza">Limpeza</option>
+                        <option value="seguranca">Segurança</option>
+                        <option value="manutencao">Manutenção</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="prestador-endereco">Endereço:</label>
+                    <textarea id="prestador-endereco" rows="3"></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="prestador-documentos">Anexar Documentos:</label>
+                    <input type="file" id="prestador-documentos" multiple>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn-salvar" onclick="salvarPrestador()">Salvar</button>
+                <button class="btn-cancelar" onclick="fecharModalPrestador()">Cancelar</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Função para mostrar seções
+        function mostrarSecao(secaoId) {
+            const secoes = ['dashboard', 'prestadores', 'historico', 'agendamentos', 'relatorios'];
+            secoes.forEach(secao => {
+                document.getElementById(secao).style.display = 'none';
+            });
+            document.getElementById(secaoId).style.display = 'block';
+        }
+
+        // Função para abrir o modal de novo prestador
+        function abrirModalPrestador() {
+            document.getElementById('modalPrestador').style.display = 'block';
+        }
+
+        // Função para fechar o modal de novo prestador
+        function fecharModalPrestador() {
+            document.getElementById('modalPrestador').style.display = 'none';
+        }
+
+        // Função para salvar prestador (lógica a implementar)
+        function salvarPrestador() {
+            // Capturar os dados dos campos
+            const nome = document.getElementById('prestador-nome').value;
+            const cpf = document.getElementById('prestador-cpf').value;
+            const contato = document.getElementById('prestador-contato').value;
+            const categoria = document.getElementById('prestador-categoria').value;
+            const endereco = document.getElementById('prestador-endereco').value;
+            // Aqui você pode adicionar a lógica para salvar os dados
+            alert('Prestador salvo com sucesso!');
+            fecharModalPrestador();
+        }
+
+        // Função para filtrar prestadores (lógica a implementar)
+        function filtrarPrestadores() {
+            const nome = document.getElementById('filtro-nome').value;
+            const categoria = document.getElementById('filtro-categoria').value;
+            // Lógica para filtrar a tabela de prestadores
+            alert('Filtros aplicados!');
+        }
+
+        // Funções similares para histórico e agendamentos
+        function filtrarHistorico() {
+            alert('Filtros de histórico aplicados!');
+        }
+
+        function filtrarAgendamentos() {
+            alert('Filtros de agendamentos aplicados!');
+        }
+
+        // Fechar o modal ao clicar fora dele
+        window.onclick = function(event) {
+            const modal = document.getElementById('modalPrestador');
+            if (event.target == modal) {
+                fecharModalPrestador();
+            }
+        }
+
+        // Função para inicializar dados (exemplo)
+        function inicializarDashboard() {
+            document.getElementById('prestadores-ativos').innerText = 5;
+            document.getElementById('servicos-pendentes').innerText = 2;
+            document.getElementById('contratos-vencer').innerText = 1;
+        }
+
+        // Chamada inicial
+        mostrarSecao('dashboard');
+        inicializarDashboard();
+    </script>
+
+</body>
+</html>

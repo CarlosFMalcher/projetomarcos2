@@ -1,0 +1,139 @@
+/* Estilo geral */
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: #F7F7F7;
+}
+
+/* Header */
+header {
+  background-color: #030a23;
+  color: white;
+  padding: 15px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+header .logo-container {
+  display: flex;
+  align-items: center;
+}
+
+header img {
+  width: 50px;
+  height: 50px;
+  object-fit: cover;
+  margin-right: 15px;
+}
+
+header h1 {
+  font-size: 20px;
+  margin: 0;
+}
+
+.header-btns {
+  display: flex;
+  gap: 15px;
+}
+
+.header-btns a {
+  background-color: rgba(255, 255, 255, 0.2);
+  color: white;
+  padding: 8px 20px;
+  border-radius: 20px;
+  text-decoration: none;
+  font-size: 14px;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.header-btns a:hover {
+  background-color: rgba(255, 255, 255, 0.4);
+  transform: scale(1.05);
+}
+
+/* Dashboard */
+main {
+  padding: 20px;
+}
+
+.dashboard-container {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr); /* Fixado em 3 colunas */
+  gap: 20px;
+  max-width: 100%; /* Garante que o grid não estoure o espaço */
+  margin: 0 auto; /* Centraliza o container */
+}
+
+.dashboard-box {
+  background-color: white;
+  padding: 20px;
+  border-radius: 10px;
+  text-align: center;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.dashboard-box:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+}
+
+.dashboard-box h3 {
+  font-size: 18px;
+  margin-bottom: 10px;
+  color: #030a23;
+}
+
+.dashboard-box p {
+  font-size: 14px;
+  color: #6D6D6D;
+}
+
+.dashboard-box a {
+  display: inline-block;
+  margin-top: 10px;
+  color: #030a23;
+  font-weight: bold;
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.dashboard-box a:hover {
+  color: #007BFF;
+}
+
+  /* Gráficos */
+  .charts {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 30px;
+  }
+  .chart {
+      flex: 1 1 calc(50% - 30px);
+      max-width: 500px;
+  }
+  
+  
+  .visaog {
+      text-align: center;
+      margin-top: 40px;
+  }
+  .chart canvas {
+      height: 300px; /* Ajuste conforme necessário */
+  }
+
+/* Responsividade */
+@media (max-width: 768px) {
+  .dashboard-container {
+    grid-template-columns: repeat(2, 1fr); /* 2 colunas em telas médias */
+  }
+}
+
+@media (max-width: 480px) {
+  .dashboard-container {
+    grid-template-columns: 1fr; /* 1 coluna em telas pequenas */
+  }
+}

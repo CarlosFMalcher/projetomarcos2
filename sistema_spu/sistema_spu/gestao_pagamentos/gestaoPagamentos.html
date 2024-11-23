@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestão de Pagamentos</title>
+    <style>
+        /* Seu CSS permanece o mesmo */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4; /* Cinza claro */
+            margin: 0;
+            padding: 0;
+        }
+
+        header {
+            background-color: #1a1f36; /* Azul-escuro quase preto */
+            color: white;
+            padding: 15px;
+            text-align: center;
+            position: relative;
+        }
+
+        h1 {
+            margin: 0;
+        }
+
+        .home-button {
+            position: absolute;
+            left: 15px;
+            top: 15px;
+            background-color: white;
+            color: #1a1f36; /* Azul-escuro */
+            padding: 10px;
+            border-radius: 50%;
+            text-decoration: none;
+            font-size: 18px;
+            border: 1px solid #ccc; /* Borda cinza clara */
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        .home-button:hover {
+            background-color: #e6e6e6; /* Cinza claro no hover */
+            color: #0d1130; /* Azul ainda mais escuro no hover */
+        }
+
+        .container {
+            width: 90%;
+            margin: 20px auto;
+        }
+
+        .button-container {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .button-container a {
+            background-color: #1a1f36; /* Azul-escuro */
+            color: white;
+            padding: 10px 20px;
+            border-radius: 5px;
+            text-decoration: none;
+            transition: background-color 0.3s;
+        }
+
+        .button-container a:hover {
+            background-color: #0d1130; /* Azul mais escuro no hover */
+        }
+
+        section {
+            background-color: white;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Sombra leve */
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th, td {
+            padding: 10px;
+            text-align: left;
+            border-bottom: 1px solid #ddd; /* Borda cinza clara */
+        }
+
+        th {
+            background-color: #1a1f36; /* Azul-escuro */
+            color: white;
+        }
+
+        tr:hover {
+            background-color: #f9f9f9; /* Cinza muito claro */
+        }
+
+        .details-row {
+            display: none;
+            background-color: #f8f8f8; /* Cinza claro */
+        }
+
+        .details-row td {
+            border-top: none;
+        }
+
+        .search-bar {
+            margin-top: 20px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .search-bar input, .search-bar select, .search-bar label {
+            margin-bottom: 10px;
+        }
+
+        .search-bar input[type="text"] {
+            flex: 1;
+            padding: 10px;
+            border: 1px solid #ccc; /* Cinza claro */
+            border-radius: 5px;
+        }
+
+        .search-bar button {
+            background-color: #1a1f36; /* Azul-escuro */
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .search-bar button:hover {
+            background-color: #0d1130; /* Azul mais escuro no hover */
+        }
+
+        .pay-button {
+            background-color: #28a745; /* Verde */
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .pay-button:hover {
+            background-color: #218838; /* Verde mais escuro no hover */
+        }
+
+        .popup {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 400px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2); /* Sombra mais forte */
+            padding: 20px;
+            z-index: 1000;
+        }
+
+        .popup.active {
+            display: block;
+        }
+
+        .popup h2 {
+            margin-top: 0;
+        }
+
+        .popup label {
+            display: block;
+            margin: 10px 0 5px;
+        }
+
+        .popup select, .popup input {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc; /* Cinza claro */
+            border-radius: 5px;
+        }
+
+        .popup-buttons {
+    text-align: right; /* Alinha os botões à direita */
+}
+
+/* Estilo para o botão "Confirmar Pagamento" */
+.popup-buttons button.confirm {
+    background-color: #28a745; /* Verde */
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-left: 10px;
+    transition: background-color 0.3s ease;
+}
+
+.popup-buttons button.confirm:hover {
+    background-color: #218838; /* Verde mais escuro no hover */
+}
+
+/* Estilo para o botão "Cancelar" */
+.popup-buttons button.cancel {
+    background-color: #e3342f; /* Vermelho */
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-left: 10px;
+    transition: background-color 0.3s ease;
+}
+
+.popup-buttons button.cancel:hover {
+    background-color: #c02c23; /* Vermelho mais escuro no hover */
+}
+
+/* Estilo para o link "Anexar Comprovante" */
+.popup-buttons .comprovante-link {
+    color: #007bff; /* Azul */
+    text-decoration: underline; /* Sublinhado */
+    cursor: pointer;
+    font-size: 14px;
+    margin-right: auto; /* Alinha à esquerda */
+}
+
+.popup-buttons .comprovante-link:hover {
+    color: #0056b3; /* Azul mais escuro no hover */
+}
+
+/* Estilo para a caixa de texto "Adicionar Comentário" */
+#popup-comment {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc; /* Borda cinza */
+    border-radius: 5px;
+    resize: none; /* Remove redimensionamento */
+    margin-bottom: 15px;
+    font-size: 14px;
+}
+
+    </style>
+</head>
+<body>
+
+<header>
+    <a href="../dashboard/dashboard.html"><button class="home-button">Voltar</button></a>
+   
+    <h1>Gestão de Pagamentos</h1>
+</header>
+
+<div class="container">
+    <section>
+        <h2>Gerencie os pagamentos dos funcionários</h2>
+        <div class="button-container">
+            <a href="/sistema_spu/gestao_pagamentos/registrar_pagamento/registroNovoPg.html">Registrar Novo Pagamento</a>
+        </div>
+
+        <div class="search-bar">
+            <!-- Campo para buscar por nome ou pagamento -->
+            <input type="text" placeholder="Buscar por funcionário ou pagamento...">
+        
+            <!-- Filtro por Data -->
+            <label for="filter-date">Data:</label>
+            <input type="date" id="filter-date">
+        
+            <!-- Filtro por Status -->
+            <label for="filter-status">Status:</label>
+            <select id="filter-status">
+                <option value="">Todos</option>
+                <option value="pendente">Pendente</option>
+                <option value="pago">Pago</option>
+            </select>
+        
+            <!-- Filtro por Tipo de Serviço -->
+            <label for="filter-service-type">Tipo de Serviço:</label>
+            <select id="filter-service-type">
+                <option value="">Todos</option>
+                <option value="prestador">Prestador</option>
+                <option value="contratado">Contratado</option>
+                <option value="outro">Outro</option>
+            </select>
+        
+            <!-- Botão de busca -->
+            <button onclick="aplicarFiltros()">Buscar</button>
+        </div>
+        
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Nome</th>
+                    <th>Data</th>
+                    <th>Tipo de Serviço</th>
+                    <th>Cargo</th>
+                    <th>Valor</th>
+                    <th>Status</th>
+                    <th>Detalhes</th>
+                    <th>Pagar</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Linhas serão inseridas aqui via JavaScript -->
+            </tbody>
+        </table>
+    </section>
+</div>
+
+<!-- Pop-up de pagamento -->
+<div id="payment-popup" class="popup">
+    <h2>Realizar Pagamento</h2>
+    <form id="payment-form" method="POST" enctype="multipart/form-data">
+        <label for="popup-name">Nome:</label>
+        <input type="text" id="popup-name" disabled>
+        <input type="hidden" id="popup-id-funcionario" name="id_funcionario">
+        <input type="hidden" id="popup-id-pagamento" name="id_pagamento">
+
+        <label for="popup-value">Valor:</label>
+        <input type="text" id="popup-value" disabled>
+
+        <label for="popup-payment-type">Tipo de Pagamento:</label>
+        <select id="popup-payment-type" name="tipo_pagamento">
+            <option value="pix">Pix</option>
+            <option value="dinheiro">Dinheiro</option>
+            <option value="transferencia">Transferência</option>
+            <option value="outros">Outros</option>
+        </select>
+
+        <label for="popup-comment">Adicionar Comentário:</label>
+        <textarea id="popup-comment" name="comentario" placeholder="Escreva seu comentário aqui..." rows="4"></textarea>
+
+        <label for="popup-comprovante">Anexar Comprovante:</label>
+        <input type="file" id="popup-comprovante" name="comprovante" accept="image/*,application/pdf">
+
+        <div class="popup-buttons">
+            <button type="button" class="cancel" onclick="closePopup()">Cancelar</button>
+            <button type="submit" class="confirm">Confirmar Pagamento</button>
+        </div>
+    </form>
+</div>
+
+
+
+<script>
+document.getElementById('payment-form').addEventListener('submit', function (e) {
+    e.preventDefault(); // Evita o envio padrão do formulário
+
+    const formData = new FormData(this);
+
+    console.log('Dados enviados:', Array.from(formData.entries())); // Log dos dados enviados
+
+    fetch('processar_pagamento.php', {
+        method: 'POST',
+        body: formData,
+    })
+        .then(response => {
+            console.log('Resposta bruta:', response); // Log da resposta
+            return response.json();
+        })
+        .then(data => {
+            if (data.status === 'success') {
+                alert(data.message); // Mostra sucesso
+                closePopup(); // Fecha o pop-up
+                carregarPagamentos(); // Recarrega a lista de pagamentos
+            } else {
+                alert('Erro: ' + data.message); // Mostra erro
+            }
+        })
+        .catch(error => console.error('Erro ao processar o pagamento:', error));
+});
+
+
+    document.addEventListener('DOMContentLoaded', () => {
+        carregarPagamentos();
+    });
+
+    function toggleDetails(rowId) {
+        const detailsRow = document.getElementById(`details-${rowId}`);
+        detailsRow.style.display = detailsRow.style.display === 'none' ? 'table-row' : 'none';
+    }
+
+function openPopup(name,value, idFuncionario, idPagamento) {
+    const popup = document.getElementById('payment-popup');
+    document.getElementById('popup-name').value = name;
+    document.getElementById('popup-value').value = `R$ ${parseFloat(value).toFixed(2)}`;
+    document.getElementById('popup-id-funcionario').value = idFuncionario;
+    document.getElementById('popup-id-pagamento').value = idPagamento;
+    popup.classList.add('active');
+}
+
+    function closePopup() {
+        const popup = document.getElementById('payment-popup');
+        popup.classList.remove('active');
+    }
+
+    function carregarPagamentos() {
+        fetch('buscar_pagamentos.php')
+            .then(response => response.json())
+            .then(data => {
+                const tbody = document.querySelector('table tbody');
+                tbody.innerHTML = ''; // Limpa os dados anteriores
+
+                data.forEach(pagamento => {
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td>${pagamento.nome}</td>
+                        <td>${pagamento.data_pagamento_formatada}</td>
+                        <td>${pagamento.tipo_servico}</td>
+                        <td>${pagamento.cargo}</td>
+                        <td>R$ ${parseFloat(pagamento.valor).toFixed(2)}</td>
+                        <td>${pagamento.status}</td>
+                        <td><button onclick="toggleDetails('${pagamento.id_pagamento}')">></button></td>
+                        <td><button class="pay-button" onclick="openPopup('${pagamento.nome}', '${pagamento.valor}')">Pagar</button></td>
+                    `;
+                    tbody.appendChild(row);
+
+                    const detailsRow = document.createElement('tr');
+                    detailsRow.id = `details-${pagamento.id_pagamento}`;
+                    detailsRow.classList.add('details-row');
+                    detailsRow.style.display = 'none';
+                    detailsRow.innerHTML = `
+                        <td colspan="8">
+                            <strong>Detalhes:</strong><br>
+                            ID: ${pagamento.id_pagamento}<br>
+                            Nome: ${pagamento.nome}<br>
+                            Cargo: ${pagamento.cargo}<br>
+                            Tipo de Serviço: ${pagamento.tipo_servico}<br>
+                            Valor: R$ ${parseFloat(pagamento.valor).toFixed(2)}<br>
+                            Status: ${pagamento.status}<br>
+                            <button>Baixar Comprovante</button>
+                        </td>
+                    `;
+                    tbody.appendChild(detailsRow);
+                });
+            })
+            .catch(error => console.error('Erro ao carregar pagamentos:', error));
+    }
+
+    function aplicarFiltros() {
+        // Implementação dos filtros (você pode adaptar conforme necessário)
+        const busca = document.querySelector('.search-bar input[type="text"]').value.toLowerCase();
+        const data = document.getElementById('filter-date').value;
+        const status = document.getElementById('filter-status').value;
+        const tipoServico = document.getElementById('filter-service-type').value;
+
+        // Lógica para aplicar os filtros (exemplo simples)
+        fetch('buscar_pagamentos.php')
+            .then(response => response.json())
+            .then(data => {
+                let pagamentosFiltrados = data;
+
+                if (busca) {
+                    pagamentosFiltrados = pagamentosFiltrados.filter(pagamento =>
+                        pagamento.nome.toLowerCase().includes(busca)
+                    );
+                }
+
+                if (data) {
+                    pagamentosFiltrados = pagamentosFiltrados.filter(pagamento =>
+                        pagamento.data_pagamento === data
+                    );
+                }
+
+                if (status) {
+                    pagamentosFiltrados = pagamentosFiltrados.filter(pagamento =>
+                        pagamento.status.toLowerCase() === status
+                    );
+                }
+
+                if (tipoServico) {
+                    pagamentosFiltrados = pagamentosFiltrados.filter(pagamento =>
+                        pagamento.tipo_servico.toLowerCase() === tipoServico
+                    );
+                }
+
+                // Atualiza a tabela com os dados filtrados
+                const tbody = document.querySelector('table tbody');
+                tbody.innerHTML = '';
+
+                pagamentosFiltrados.forEach(pagamento => {
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td>${pagamento.nome}</td>
+                        <td>${pagamento.data_pagamento_formatada}</td>
+                        <td>${pagamento.tipo_servico}</td>
+                        <td>${pagamento.cargo}</td>
+                        <td>R$ ${parseFloat(pagamento.valor).toFixed(2)}</td>
+                        <td>${pagamento.status}</td>
+                        <td><button onclick="toggleDetails('${pagamento.id_pagamento}')">></button></td>
+                        <td><button class="pay-button" onclick="openPopup('${pagamento.nome}', '${pagamento.cpf}', '${pagamento.valor}')">Pagar</button></td>
+                    `;
+                    tbody.appendChild(row);
+
+                    const detailsRow = document.createElement('tr');
+                    detailsRow.id = `details-${pagamento.id_pagamento}`;
+                    detailsRow.classList.add('details-row');
+                    detailsRow.style.display = 'none';
+                    detailsRow.innerHTML = `
+                        <td colspan="8">
+                            <strong>Detalhes:</strong><br>
+                            ID: ${pagamento.id_pagamento}<br>
+                            Nome: ${pagamento.nome}<br>
+                            Cargo: ${pagamento.cargo}<br>
+                            Tipo de Serviço: ${pagamento.tipo_servico}<br>
+                            Valor: R$ ${parseFloat(pagamento.valor).toFixed(2)}<br>
+                            Status: ${pagamento.status}<br>
+                            <button>Baixar Comprovante</button>
+                        </td>
+                    `;
+                    tbody.appendChild(detailsRow);
+                });
+            })
+            .catch(error => console.error('Erro ao aplicar filtros:', error));
+    }
+</script>
+</body>
+</html>

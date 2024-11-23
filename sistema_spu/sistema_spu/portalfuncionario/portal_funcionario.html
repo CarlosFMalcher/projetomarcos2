@@ -1,0 +1,803 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portal do Funcionário</title>
+    <style>
+        /* Estilos existentes */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f7f7f7;
+            color: #1e1e2f;
+        }
+
+        header {
+            background-color: #e0e0e0;
+            color: #1e1e2f;
+            padding: 15px 20px;
+            text-align: center;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 22px;
+        }
+
+        .menu-toggle {
+            font-size: 20px;
+            cursor: pointer;
+            background: none;
+            border: none;
+            color: #1e1e2f;
+        }
+
+        nav {
+            display: flex;
+            flex-direction: column;
+            width: 250px;
+            height: 100vh;
+            background-color: #ffffff;
+            color: #1e1e2f;
+            position: fixed;
+            top: 0;
+            left: -250px;
+            overflow-y: auto;
+            border-right: 1px solid #dcdcdc;
+            transition: left 0.3s ease;
+        }
+
+        nav.active {
+            left: 0;
+        }
+
+        nav a {
+            padding: 15px;
+            text-decoration: none;
+            color: #1e1e2f;
+            border-bottom: 1px solid #dcdcdc;
+            font-size: 14px;
+        }
+
+        nav a:hover {
+            background-color: #e0e0e0;
+        }
+
+        nav a.active {
+            background-color: #c5d1e0;
+            color: #1e1e2f;
+        }
+
+        main {
+            margin-left: 0;
+            padding: 20px;
+            transition: margin-left 0.3s ease;
+        }
+
+        nav.active + main {
+            margin-left: 260px;
+        }
+
+        section {
+            background: #ffffff;
+            margin-bottom: 20px;
+            border: 1px solid #dcdcdc;
+            border-radius: 5px;
+            padding: 15px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h2 {
+            border-bottom: 2px solid #1e1e2f;
+            padding-bottom: 5px;
+            margin-bottom: 15px;
+            color: #1e1e2f;
+        }
+
+        footer {
+            background-color: #e0e0e0;
+            color: #1e1e2f;
+            text-align: center;
+            padding: 10px;
+            margin-top: 20px;
+            border-top: 1px solid #dcdcdc;
+        }
+
+        .filter-container {
+            margin-bottom: 15px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .filter-container label {
+            margin-right: 5px;
+        }
+
+        .filter-container input,
+        .filter-container select {
+            padding: 8px;
+            border: 1px solid #dcdcdc;
+            border-radius: 5px;
+            font-size: 14px;
+        }
+
+        .filter-container button {
+            padding: 8px 15px;
+            background-color: #1e1e2f;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .filter-container button:hover {
+            background-color: #3b3b4d;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+
+        table th,
+        table td {
+            padding: 10px;
+            border: 1px solid #dcdcdc;
+            text-align: left;
+            font-size: 14px;
+        }
+
+        table th {
+            background-color: #f0f0f0;
+        }
+
+        /* Estilos para dispositivos móveis */
+        @media (max-width: 768px) {
+            nav {
+                width: 100%;
+                height: auto;
+                position: relative;
+                left: 0;
+            }
+
+            nav.active + main {
+                margin-left: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Portal do Funcionário</h1>
+        <button class="menu-toggle" id="menuToggle">☰</button>
+    </header>
+    <nav id="sidebar">
+        <a href="#inicio" class="active">Início</a>
+        <a href="#registro-ponto">Registro de Ponto</a>
+        <a href="#batida-ponto">Batida de Ponto</a>
+        <a href="#pagamentos">Relatório de Pagamentos</a>
+        <a href="#jornada">Relatório de Jornada</a>
+        <a href="#tarefas">Relatório de Tarefas</a>
+        <a href="#desempenho">Relatório de Desempenho</a>
+        <a href="#beneficios">Relatório de Benefícios</a>
+        <a href="#configuracoes">Configurações Pessoais</a>
+        <a href="#auditoria-login">Auditoria de Login</a>
+        <a href="#historico-alteracoes">Histórico de Alterações Pessoais</a>
+        <a href="#faltas-atrasos">Relatório de Faltas e Atrasos</a>
+        <a href="#solicitacoes">Solicitações e Requisições</a>
+        <a href="#ferias">Relatório de Férias</a>
+        <a href="#treinamentos">Treinamentos e Cursos</a>
+        <a href="#beneficios-recebidos">Benefícios Recebidos</a>
+        <a href="#historico-financeiro">Histórico Financeiro</a>
+        <a href="#auditoria-acessos">Auditoria de Acessos</a>
+        <a href="#feedbacks">Feedbacks e Avaliações</a>
+        <a href="#metas">Metas e Resultados</a>
+        <a href="#documentos">Documentos Associados</a>
+        <a href="#banco-horas">Banco de Horas</a>
+        <a href="logout.php">Sair</a>
+    </nav>
+    <main>
+        <section id="inicio">
+            <h2>Bem-vindo ao Portal do Funcionário</h2>
+            <p>Utilize o menu ao lado para acessar as funcionalidades do portal.</p>
+        </section>
+
+        <section id="registro-ponto">
+            <h2>Registre seu Ponto</h2>
+            <div>
+                <a href="registroponto.html" style="display: inline-block; padding: 10px 20px; background-color: #3b5998; color: white; text-decoration: none; border-radius: 5px;">Registrar Ponto</a>
+            </div>
+        </section>
+
+        <section id="batida-ponto">
+            <h2>Batida de Ponto</h2>
+            <div class="filter-container">
+                <label for="filter-punch-date">Data:</label>
+                <input type="date" id="filter-punch-date">
+                <button onclick="filtrarBatidas()">Aplicar Filtro</button>
+            </div>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Data</th>
+                        <th>Hora de Entrada</th>
+                        <th>Hora de Saída</th>
+                        <th>Status</th>
+                        <th>Detalhes</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Inserir dados dinâmicos -->
+                </tbody>
+            </table>
+        </section>
+
+        <section id="pagamentos">
+            <h2>Relatório de Pagamentos</h2>
+            <div class="filter-container">
+                <label for="filter-payment-date">Data:</label>
+                <input type="date" id="filter-payment-date">
+                <label for="filter-payment-status">Status:</label>
+                <select id="filter-payment-status">
+                    <option value="">Todos</option>
+                    <option value="pendente">Pendente</option>
+                    <option value="pago">Pago</option>
+                </select>
+                <button onclick="filtrarPagamentos()">Aplicar Filtro</button>
+            </div>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Data de Pagamento</th>
+                        <th>Valor Pago</th>
+                        <th>Método de Pagamento</th>
+                        <th>Comprovante</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Inserir dados dinâmicos -->
+                </tbody>
+            </table>
+        </section>
+
+        <section id="jornada">
+            <h2>Relatório de Jornada de Trabalho</h2>
+            <div class="filter-container">
+                <label for="filter-work-date">Data:</label>
+                <input type="date" id="filter-work-date">
+                <button onclick="filtrarJornada()">Aplicar Filtro</button>
+            </div>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Data da Jornada</th>
+                        <th>Horas Trabalhadas</th>
+                        <th>Horas Extras</th>
+                        <th>Total de Horas</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Inserir dados dinâmicos -->
+                </tbody>
+            </table>
+        </section>
+
+        <!-- Relatório de Tarefas -->
+        <section id="tarefas">
+            <h2>Relatório de Tarefas</h2>
+            <div class="filter-container">
+                <label for="filter-task-status">Status:</label>
+                <select id="filter-task-status">
+                    <option value="">Todos</option>
+                    <option value="pendente">Pendente</option>
+                    <option value="em andamento">Em Andamento</option>
+                    <option value="concluída">Concluída</option>
+                </select>
+                <label for="filter-task-date">Data:</label>
+                <input type="date" id="filter-task-date">
+                <button onclick="filtrarTarefas()">Aplicar Filtro</button>
+            </div>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Descrição da Tarefa</th>
+                        <th>Data de Início</th>
+                        <th>Data de Término</th>
+                        <th>Status</th>
+                        <th>Responsável</th>
+                        <th>Observações</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Dados dinâmicos -->
+                </tbody>
+            </table>
+        </section>
+
+        <!-- Relatório de Desempenho -->
+        <section id="desempenho">
+            <h2>Relatório de Desempenho</h2>
+            <div class="filter-container">
+                <label for="filter-performance-period">Período:</label>
+                <input type="month" id="filter-performance-period">
+                <button onclick="filtrarDesempenho()">Aplicar Filtro</button>
+            </div>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Produtividade</th>
+                        <th>Metas Atingidas</th>
+                        <th>Metas Não Atingidas</th>
+                        <th>Avaliação</th>
+                        <th>Feedback</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Dados dinâmicos -->
+                </tbody>
+            </table>
+        </section>
+
+        <!-- Relatório de Benefícios -->
+        <section id="beneficios">
+            <h2>Relatório de Benefícios</h2>
+            <div class="filter-container">
+                <label for="filter-benefit-type">Tipo de Benefício:</label>
+                <select id="filter-benefit-type">
+                    <option value="">Todos</option>
+                    <option value="vale-transporte">Vale-Transporte</option>
+                    <option value="vale-refeição">Vale-Refeição</option>
+                    <option value="auxilio-saúde">Auxílio Saúde</option>
+                </select>
+                <button onclick="filtrarBeneficios()">Aplicar Filtro</button>
+            </div>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Descrição do Benefício</th>
+                        <th>Valor</th>
+                        <th>Frequência</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Dados dinâmicos -->
+                </tbody>
+            </table>
+        </section>
+
+        <!-- Configurações Pessoais -->
+        <section id="configuracoes">
+            <h2>Configurações Pessoais</h2>
+            <table>
+                <tr>
+                    <th>Nome Completo</th>
+                    <td><!-- Nome do usuário --></td>
+                </tr>
+                <tr>
+                    <th>E-mail</th>
+                    <td><!-- E-mail do usuário --></td>
+                </tr>
+                <tr>
+                    <th>Telefone</th>
+                    <td><!-- Telefone do usuário --></td>
+                </tr>
+                <tr>
+                    <th>Cargo</th>
+                    <td><!-- Cargo do usuário --></td>
+                </tr>
+                <tr>
+                    <th>Departamento</th>
+                    <td><!-- Departamento do usuário --></td>
+                </tr>
+            </table>
+            <h3>Histórico de Mudanças de Senha</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Data da Mudança</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Dados dinâmicos -->
+                </tbody>
+            </table>
+        </section>
+
+        <!-- Auditoria de Login -->
+        <section id="auditoria-login">
+            <h2>Auditoria de Login</h2>
+            <div class="filter-container">
+                <label for="filter-login-date">Data:</label>
+                <input type="date" id="filter-login-date">
+                <button onclick="filtrarAuditoriaLogin()">Aplicar Filtro</button>
+            </div>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Data e Hora</th>
+                        <th>IP</th>
+                        <th>Status</th>
+                        <th>Localização</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Dados dinâmicos -->
+                </tbody>
+            </table>
+        </section>
+
+        <!-- Histórico de Alterações Pessoais -->
+        <section id="historico-alteracoes">
+            <h2>Histórico de Alterações Pessoais</h2>
+            <div class="filter-container">
+                <label for="filter-change-date">Data:</label>
+                <input type="date" id="filter-change-date">
+                <button onclick="filtrarAlteracoes()">Aplicar Filtro</button>
+            </div>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Data da Alteração</th>
+                        <th>Campo Alterado</th>
+                        <th>Valor Anterior</th>
+                        <th>Valor Atualizado</th>
+                        <th>Responsável</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Dados dinâmicos -->
+                </tbody>
+            </table>
+        </section>
+
+        <!-- Relatório de Faltas e Atrasos -->
+        <section id="faltas-atrasos">
+            <h2>Relatório de Faltas e Atrasos</h2>
+            <div class="filter-container">
+                <label for="filter-absence-date">Data:</label>
+                <input type="date" id="filter-absence-date">
+                <button onclick="filtrarFaltasAtrasos()">Aplicar Filtro</button>
+            </div>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Data</th>
+                        <th>Tipo de Ocorrência</th>
+                        <th>Justificativa</th>
+                        <th>Status da Justificativa</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Dados dinâmicos -->
+                </tbody>
+            </table>
+        </section>
+
+        <!-- Solicitações e Requisições -->
+        <section id="solicitacoes">
+            <h2>Solicitações e Requisições</h2>
+            <div class="filter-container">
+                <label for="filter-request-type">Tipo:</label>
+                <select id="filter-request-type">
+                    <option value="">Todos</option>
+                    <option value="revisao-ponto">Revisão de Ponto</option>
+                    <option value="ferias">Férias</option>
+                    <option value="ajuste-salarial">Ajuste Salarial</option>
+                </select>
+                <button onclick="filtrarSolicitacoes()">Aplicar Filtro</button>
+            </div>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Tipo da Solicitação</th>
+                        <th>Data da Solicitação</th>
+                        <th>Status</th>
+                        <th>Detalhes</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Dados dinâmicos -->
+                </tbody>
+            </table>
+        </section>
+
+        <!-- Relatório de Férias -->
+        <section id="ferias">
+            <h2>Relatório de Férias</h2>
+            <div class="filter-container">
+                <label for="filter-vacation-year">Ano:</label>
+                <input type="number" id="filter-vacation-year" min="2000" max="2100">
+                <button onclick="filtrarFerias()">Aplicar Filtro</button>
+            </div>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Período de Férias</th>
+                        <th>Dias Gozados</th>
+                        <th>Saldo de Dias</th>
+                        <th>Status da Solicitação</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Dados dinâmicos -->
+                </tbody>
+            </table>
+        </section>
+
+        <!-- Treinamentos e Cursos -->
+        <section id="treinamentos">
+            <h2>Treinamentos e Cursos</h2>
+            <div class="filter-container">
+                <label for="filter-training-status">Status:</label>
+                <select id="filter-training-status">
+                    <option value="">Todos</option>
+                    <option value="inscrito">Inscrito</option>
+                    <option value="concluído">Concluído</option>
+                    <option value="pendente">Pendente</option>
+                </select>
+                <button onclick="filtrarTreinamentos()">Aplicar Filtro</button>
+            </div>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Nome do Treinamento</th>
+                        <th>Data de Realização</th>
+                        <th>Status</th>
+                        <th>Avaliação</th>
+                        <th>Certificado</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Dados dinâmicos -->
+                </tbody>
+            </table>
+        </section>
+
+        <!-- Benefícios Recebidos -->
+        <section id="beneficios-recebidos">
+            <h2>Benefícios Recebidos</h2>
+            <div class="filter-container">
+                <label for="filter-benefit-type-received">Tipo de Benefício:</label>
+                <select id="filter-benefit-type-received">
+                    <option value="">Todos</option>
+                    <option value="vale-transporte">Vale-Transporte</option>
+                    <option value="vale-refeição">Vale-Refeição</option>
+                    <option value="auxilio-saúde">Auxílio Saúde</option>
+                </select>
+                <button onclick="filtrarBeneficiosRecebidos()">Aplicar Filtro</button>
+            </div>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Tipo de Benefício</th>
+                        <th>Valor</th>
+                        <th>Descontos</th>
+                        <th>Período</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Dados dinâmicos -->
+                </tbody>
+            </table>
+        </section>
+
+        <!-- Histórico Financeiro -->
+        <section id="historico-financeiro">
+            <h2>Histórico Financeiro</h2>
+            <div class="filter-container">
+                <label for="filter-financial-period">Período:</label>
+                <input type="month" id="filter-financial-period">
+                <button onclick="filtrarHistoricoFinanceiro()">Aplicar Filtro</button>
+            </div>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Data</th>
+                        <th>Descrição</th>
+                        <th>Crédito</th>
+                        <th>Débito</th>
+                        <th>Saldo</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Dados dinâmicos -->
+                </tbody>
+            </table>
+        </section>
+
+        <!-- Auditoria de Acessos -->
+        <section id="auditoria-acessos">
+            <h2>Auditoria de Acessos</h2>
+            <div class="filter-container">
+                <label for="filter-access-date">Data:</label>
+                <input type="date" id="filter-access-date">
+                <button onclick="filtrarAuditoriaAcessos()">Aplicar Filtro</button>
+            </div>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Data e Hora</th>
+                        <th>IP</th>
+                        <th>Ação Realizada</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Dados dinâmicos -->
+                </tbody>
+            </table>
+        </section>
+
+        <!-- Feedbacks e Avaliações -->
+        <section id="feedbacks">
+            <h2>Feedbacks e Avaliações</h2>
+            <div class="filter-container">
+                <label for="filter-feedback-date">Data:</label>
+                <input type="date" id="filter-feedback-date">
+                <button onclick="filtrarFeedbacks()">Aplicar Filtro</button>
+            </div>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Data do Feedback</th>
+                        <th>Avaliador</th>
+                        <th>Nota</th>
+                        <th>Comentário</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Dados dinâmicos -->
+                </tbody>
+            </table>
+        </section>
+
+        <!-- Metas e Resultados -->
+        <section id="metas">
+            <h2>Metas e Resultados</h2>
+            <div class="filter-container">
+                <label for="filter-goal-status">Status:</label>
+                <select id="filter-goal-status">
+                    <option value="">Todos</option>
+                    <option value="em andamento">Em Andamento</option>
+                    <option value="concluída">Concluída</option>
+                    <option value="atrasada">Atrasada</option>
+                </select>
+                <button onclick="filtrarMetas()">Aplicar Filtro</button>
+            </div>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Nome da Meta</th>
+                        <th>Prazo</th>
+                        <th>Status</th>
+                        <th>Progresso</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Dados dinâmicos -->
+                </tbody>
+            </table>
+        </section>
+
+        <!-- Documentos Associados -->
+        <section id="documentos">
+            <h2>Documentos Associados</h2>
+            <div class="filter-container">
+                <label for="filter-document-type">Tipo de Documento:</label>
+                <select id="filter-document-type">
+                    <option value="">Todos</option>
+                    <option value="contrato">Contrato</option>
+                    <option value="identificacao">Documento de Identificação</option>
+                    <option value="outros">Outros</option>
+                </select>
+                <button onclick="filtrarDocumentos()">Aplicar Filtro</button>
+            </div>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Nome do Documento</th>
+                        <th>Tipo</th>
+                        <th>Data de Upload</th>
+                        <th>Download</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Dados dinâmicos -->
+                </tbody>
+            </table>
+        </section>
+
+        <!-- Banco de Horas -->
+        <section id="banco-horas">
+            <h2>Banco de Horas</h2>
+            <div class="filter-container">
+                <label for="filter-hours-date">Data:</label>
+                <input type="date" id="filter-hours-date">
+                <button onclick="filtrarBancoHoras()">Aplicar Filtro</button>
+            </div>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Data</th>
+                        <th>Horas Acumuladas</th>
+                        <th>Saldo Final</th>
+                        <th>Regras de Compensação</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Dados dinâmicos -->
+                </tbody>
+            </table>
+        </section>
+
+        
+
+    </main>
+    <footer>
+        <p>&copy; 2024 Sistema de Pagamento Uirapuru</p>
+    </footer>
+
+    <script>
+        const menuToggle = document.getElementById('menuToggle');
+        const sidebar = document.getElementById('sidebar');
+
+        menuToggle.addEventListener('click', () => {
+            sidebar.classList.toggle('active');
+        });
+
+        // Funções de filtro (exemplos)
+        function filtrarPagamentos() {
+            const date = document.getElementById('filter-payment-date').value;
+            const status = document.getElementById('filter-payment-status').value;
+            console.log(`Filtrando pagamentos por Data: ${date}, Status: ${status}`);
+            // Implementar lógica de filtragem aqui
+        }
+
+        function filtrarBatidas() {
+            const date = document.getElementById('filter-punch-date').value;
+            console.log(`Filtrando batidas de ponto por Data: ${date}`);
+            // Implementar lógica de filtragem aqui
+        }
+
+        function filtrarJornada() {
+            const date = document.getElementById('filter-work-date').value;
+            console.log(`Filtrando jornada por Data: ${date}`);
+            // Implementar lógica de filtragem aqui
+        }
+
+        // Adicionar as demais funções de filtragem conforme necessário
+        function filtrarTarefas() {
+            const status = document.getElementById('filter-task-status').value;
+            const date = document.getElementById('filter-task-date').value;
+            console.log(`Filtrando tarefas por Status: ${status}, Data: ${date}`);
+        }
+
+        function filtrarDesempenho() {
+            const period = document.getElementById('filter-performance-period').value;
+            console.log(`Filtrando desempenho por Período: ${period}`);
+        }
+
+        function filtrarBeneficios() {
+            const type = document.getElementById('filter-benefit-type').value;
+            console.log(`Filtrando benefícios por Tipo: ${type}`);
+        }
+
+        function filtrarAuditoriaLogin() {
+            const date = document.getElementById('filter-login-date').value;
+            console.log(`Filtrando auditoria de login por Data: ${date}`);
+        }
+
+        // Continue adicionando as funções de filtro para os demais relatórios...
+    </script>
+</body>
+</html>

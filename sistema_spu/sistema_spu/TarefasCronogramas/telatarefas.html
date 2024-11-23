@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Tarefas e Cronogramas</title>
+    <style>
+        /* Estilos Gerais */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f7f7f7;
+            color: #1e1e2f;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* Cabeçalho */
+        header {
+            background-color: #1e1e2f;
+            color: #ffffff;
+            padding: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 24px;
+        }
+
+        /* Botão Voltar */
+        .btn-voltar {
+            background-color: #ffffff;
+            color: #1e1e2f;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            text-decoration: none;
+            font-size: 14px;
+        }
+
+        .btn-voltar:hover {
+            background-color: #e0e0e0;
+        }
+
+        /* Conteúdo Principal */
+        .container {
+            padding: 20px;
+        }
+
+        /* Filtros */
+        .filtros {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .filtros label {
+            font-weight: bold;
+            margin-right: 5px;
+        }
+
+        .filtros select,
+        .filtros input {
+            padding: 8px;
+            border: 1px solid #dcdcdc;
+            border-radius: 5px;
+            font-size: 14px;
+        }
+
+        .filtros button {
+            background-color: #1e1e2f;
+            color: #ffffff;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .filtros button:hover {
+            background-color: #3b3b4d;
+        }
+
+        /* Seção de Tarefas */
+        .tarefas {
+            display: flex;
+            gap: 20px;
+        }
+
+        .lista-tarefas {
+            flex: 1;
+            background-color: #ffffff;
+            border: 1px solid #dcdcdc;
+            border-radius: 5px;
+            padding: 15px;
+            max-height: 600px;
+            overflow-y: auto;
+        }
+
+        .lista-tarefas h2 {
+            margin-top: 0;
+            font-size: 18px;
+            color: #1e1e2f;
+        }
+
+        .tarefa {
+            background-color: #f7f7f7;
+            border: 1px solid #dcdcdc;
+            border-radius: 5px;
+            padding: 10px;
+            margin-bottom: 10px;
+        }
+
+        .tarefa h3 {
+            margin: 0;
+            font-size: 16px;
+        }
+
+        .tarefa p {
+            margin: 5px 0;
+            font-size: 14px;
+        }
+
+        .tarefa .acoes {
+            margin-top: 10px;
+            display: flex;
+            gap: 10px;
+        }
+
+        .tarefa .acoes button {
+            padding: 5px 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 12px;
+        }
+
+        .btn-concluir {
+            background-color: #28a745;
+            color: #ffffff;
+        }
+
+        .btn-editar {
+            background-color: #ffc107;
+            color: #ffffff;
+        }
+
+        .btn-excluir {
+            background-color: #dc3545;
+            color: #ffffff;
+        }
+
+        .btn-concluir:hover {
+            background-color: #218838;
+        }
+
+        .btn-editar:hover {
+            background-color: #e0a800;
+        }
+
+        .btn-excluir:hover {
+            background-color: #c82333;
+        }
+
+        /* Prioridades */
+        .prioridade-alta {
+            border-left: 5px solid #dc3545;
+        }
+
+        .prioridade-media {
+            border-left: 5px solid #ffc107;
+        }
+
+        .prioridade-baixa {
+            border-left: 5px solid #28a745;
+        }
+
+        /* Cronograma */
+        .cronograma {
+            flex: 1;
+            background-color: #ffffff;
+            border: 1px solid #dcdcdc;
+            border-radius: 5px;
+            padding: 15px;
+            max-height: 600px;
+            overflow-y: auto;
+        }
+
+        .cronograma h2 {
+            margin-top: 0;
+            font-size: 18px;
+            color: #1e1e2f;
+        }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0,0,0,0.5);
+        }
+
+        .modal-conteudo {
+            background-color: #ffffff;
+            margin: 5% auto;
+            padding: 20px;
+            border: 1px solid #dcdcdc;
+            border-radius: 5px;
+            width: 50%;
+        }
+
+        .modal-header h2 {
+            margin: 0;
+        }
+
+        .modal-footer {
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .modal-footer button {
+            padding: 8px 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .btn-salvar {
+            background-color: #28a745;
+            color: #ffffff;
+        }
+
+        .btn-cancelar {
+            background-color: #dc3545;
+            color: #ffffff;
+        }
+
+        .btn-salvar:hover {
+            background-color: #218838;
+        }
+
+        .btn-cancelar:hover {
+            background-color: #c82333;
+        }
+
+        /* Formulários */
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            font-weight: bold;
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #dcdcdc;
+            border-radius: 5px;
+            font-size: 14px;
+        }
+
+        .form-group textarea {
+            resize: vertical;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <a href="../dashboard/dashboard.html"><button class="btn-voltar">Voltar</button></a>
+      
+        <h1>Tarefas e Cronogramas</h1>
+        <button class="btn-nova-tarefa" onclick="abrirModal()">+ Nova Tarefa</button>
+    </header>
+
+    <div class="container">
+        <!-- Filtros -->
+        <div class="filtros">
+            <div>
+                <label for="filtro-status">Status:</label>
+                <select id="filtro-status">
+                    <option value="">Todos</option>
+                    <option value="pendente">Pendente</option>
+                    <option value="em_andamento">Em Andamento</option>
+                    <option value="concluida">Concluída</option>
+                </select>
+            </div>
+            <div>
+                <label for="filtro-prioridade">Prioridade:</label>
+                <select id="filtro-prioridade">
+                    <option value="">Todas</option>
+                    <option value="alta">Alta</option>
+                    <option value="media">Média</option>
+                    <option value="baixa">Baixa</option>
+                </select>
+            </div>
+            <div>
+                <label for="filtro-data">Data:</label>
+                <input type="date" id="filtro-data">
+            </div>
+            <div>
+                <label for="filtro-responsavel">Responsável:</label>
+                <input type="text" id="filtro-responsavel" placeholder="Nome do responsável">
+            </div>
+            <button onclick="aplicarFiltros()">Aplicar Filtros</button>
+        </div>
+
+        <!-- Seção Principal -->
+        <div class="tarefas">
+            <!-- Lista de Tarefas -->
+            <div class="lista-tarefas">
+                <h2>Lista de Tarefas</h2>
+                <!-- Exemplo de Tarefa -->
+                <div class="tarefa prioridade-alta">
+                    <h3>Tarefa 1 - Alta Prioridade</h3>
+                    <p><strong>Status:</strong> Pendente</p>
+                    <p><strong>Prazo:</strong> 20/12/2024</p>
+                    <p><strong>Responsável:</strong> João Silva</p>
+                    <div class="acoes">
+                        <button class="btn-concluir">Concluir</button>
+                        <button class="btn-editar">Editar</button>
+                        <button class="btn-excluir">Excluir</button>
+                    </div>
+                </div>
+                <!-- Mais tarefas podem ser adicionadas dinamicamente -->
+            </div>
+
+            <!-- Cronograma -->
+            <div class="cronograma">
+                <h2>Cronograma</h2>
+                <!-- Aqui pode ser implementado um calendário ou gráfico de Gantt -->
+                <p>Visualização do cronograma será implementada aqui.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal para Nova Tarefa -->
+    <div id="modalNovaTarefa" class="modal">
+        <div class="modal-conteudo">
+            <div class="modal-header">
+                <h2>Nova Tarefa</h2>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="tarefa-nome">Nome da Tarefa:</label>
+                    <input type="text" id="tarefa-nome">
+                </div>
+                <div class="form-group">
+                    <label for="tarefa-descricao">Descrição:</label>
+                    <textarea id="tarefa-descricao" rows="4"></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="tarefa-prioridade">Prioridade:</label>
+                    <select id="tarefa-prioridade">
+                        <option value="alta">Alta</option>
+                        <option value="media">Média</option>
+                        <option value="baixa">Baixa</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="tarefa-data-inicio">Data de Início:</label>
+                    <input type="date" id="tarefa-data-inicio">
+                </div>
+                <div class="form-group">
+                    <label for="tarefa-prazo">Prazo Final:</label>
+                    <input type="date" id="tarefa-prazo">
+                </div>
+                <div class="form-group">
+                    <label for="tarefa-responsavel">Responsável:</label>
+                    <input type="text" id="tarefa-responsavel">
+                </div>
+                <div class="form-group">
+                    <label for="tarefa-status">Status:</label>
+                    <select id="tarefa-status">
+                        <option value="pendente">Pendente</option>
+                        <option value="em_andamento">Em Andamento</option>
+                        <option value="concluida">Concluída</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="tarefa-anexos">Anexos:</label>
+                    <input type="file" id="tarefa-anexos" multiple>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn-salvar" onclick="salvarTarefa()">Salvar</button>
+                <button class="btn-cancelar" onclick="fecharModal()">Cancelar</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Função para abrir o modal
+        function abrirModal() {
+            document.getElementById('modalNovaTarefa').style.display = 'block';
+        }
+
+        // Função para fechar o modal
+        function fecharModal() {
+            document.getElementById('modalNovaTarefa').style.display = 'none';
+        }
+
+        // Função para salvar a tarefa (a implementar)
+        function salvarTarefa() {
+            // Aqui você pode adicionar a lógica para salvar a tarefa
+            alert('Tarefa salva com sucesso!');
+            fecharModal();
+        }
+
+        // Função para aplicar filtros (a implementar)
+        function aplicarFiltros() {
+            // Lógica para filtrar as tarefas com base nos critérios selecionados
+            alert('Filtros aplicados!');
+        }
+
+        // Fechar o modal ao clicar fora dele
+        window.onclick = function(event) {
+            const modal = document.getElementById('modalNovaTarefa');
+            if (event.target == modal) {
+                fecharModal();
+            }
+        }
+    </script>
+
+</body>
+</html>

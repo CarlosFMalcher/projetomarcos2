@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Sistema SPU</title>
+    <link rel="stylesheet" href="login.css">
+</head>
+<body>
+    <div class="login-container">
+        <div class="logo-container">
+            <img src="../Uirapuru logo 2.jpg" alt="Logo do Sistema" class="logo">
+        </div>
+        <form action="processa_login.php" method="POST" class="login-form">
+            <h1>Acesse o Sistema</h1>
+            <div class="form-group">
+                <label for="email">E-mail:</label>
+                <input type="email" id="email" name="email" placeholder="Digite seu e-mail" required>
+            </div>
+
+            <div class="form-group">
+                <label for="senha">Senha:</label>
+                <input type="password" id="senha" name="senha" placeholder="Digite sua senha" required>
+            </div>
+
+            <div class="form-group">
+                <label for="tipo-usuario">Você é:</label>
+                <select id="tipo-usuario" name="tipo_usuario" required>
+                    <option value="" disabled selected>Selecione</option>
+                    <option value="administrador">Administrador</option>
+                    <option value="funcionario">Funcionário</option>
+                </select>
+            </div>
+
+            <button type="submit" class="btn-login">Entrar</button>
+            <div class="links">
+                <a href="../telasSecundarias/recuperacao.php">Esqueci minha senha</a>
+            </div>
+        </form>
+    </div>
+</body>
+</html>

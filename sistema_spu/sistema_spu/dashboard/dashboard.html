@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - SPU</title>
+    <link rel="stylesheet" href="dashboard.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <!-- Cabeçalho -->
+    <header>
+        <div class="logo-con    tainer">
+            <img src="../Uirapuru logo 2.jpg" alt="Logo Uirapuru">
+            <h1>Uirapuru - Sistema de Pagamento</h1>
+        </div>
+        <div class="header-btns">
+            <a href="../portalfuncionario/portal_funcionario.html">Portal do Funcionário</a>
+            <a href="../principalSuporte/suporte.html">Suporte</a>
+            <a href="../configuracoesSistema/configuracoes.html">Configurações</a>
+        </div>
+    </header>
+
+    <!-- Conteúdo Principal -->
+    <main>
+        <!-- Cartões -->
+        <div class="dashboard-container">
+            <div class="dashboard-box">
+                <h3>Gerenciamento de Funcionários</h3>
+                <p>Gerencie informações de todos os funcionários.</p>
+                <a href="../gerenciamento_funcionario/gerenciamentoFuncionario.html">Acessar</a>
+            </div>
+
+            <div class="dashboard-box">
+                <h3>Gestão de Pagamentos</h3>
+                <p>Gerencie todos os pagamentos dos funcionários.</p>
+                <a href="../gestao_pagamentos/gestaoPagamentos.html">Acessar</a>
+            </div>
+
+            <div class="dashboard-box">
+                <h3>Controle de Ponto</h3>
+                <p>Registre e controle o ponto dos funcionários.</p>
+                <a href="../controlePonto/controlheponto.html">Acessar</a>
+            </div>
+
+            <div class="dashboard-box">
+                <h3>Relatórios</h3>
+                <p>Gere relatórios detalhados sobre o sistema.</p>
+                <a href="../RelatóriosGerenciais/relatoriosgeral.html">Acessar</a>
+            </div>
+
+            <div class="dashboard-box">
+                <h3>Tarefas e Cronogramas</h3>
+                <p>Monitore o andamento das tarefas e cronogramas.</p>
+                <a href="../TarefasCronogramas/telatarefas.html">Acessar</a>
+            </div>
+
+            <div class="dashboard-box">
+                <h3>Monitoramento de Serviços</h3>
+                <p>Monitore os serviços prestados por terceiros.</p>
+                <a href="../servicosPrestados/servicosPrestados.html">Acessar</a>
+            </div>
+
+            
+        </div>
+
+        <!-- Gráficos -->
+        <h2 class="visaog">Visão Geral</h2>
+        <div class="charts">
+            <div class="chart">
+                <canvas id="graficoPagamentos"></canvas>
+            </div>
+            <div class="chart">
+                <canvas id="graficoFuncionarios"></canvas>
+            </div>
+        </div>
+    </main>
+
+    <script>
+async function carregarDadosGraficos() {
+    try {
+        const response = await fetch('dados_graficos.php');
+        const data = await response.json();
+
+        const graficos = [
+            {
+                id: 'graficoPagamentos',
+                tipo: 'bar',
+                dados: {
+                    labels: data.graficoPagamentos.labels,
+                    valores: data.graficoPagamentos.valores,
+                    titulo: "Total Pago (R$)",
+                    cores: 'rgba(75, 192, 192, 0.6)'
+                }
+            },
+            {
+                id: 'graficoFuncionarios',
+                tipo: 'pie',
+                dados: {
+                    labels: data.graficoFuncionarios.labels,
+                    valores: data.graficoFuncionarios.valores,
+                    titulo: "Funcionários por Departamento",
+                    cores: ['#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0', '#9966FF']
+                }
+            }
+        ];
+
+        // Inicializar gráficos
+        graficos.forEach(criarGrafico);
+    } catch (error) {
+        console.error("Erro ao carregar dados dos gráficos:", error);
+    }
+}
+
+// Função genérica para criar gráficos
+function criarGrafico({ id, tipo, dados }) {
+    const ctx = document.getElementById(id).getContext('2d');
+    new Chart(ctx, {
+        type: tipo,
+        data: {
+            labels: dados.labels,
+            datasets: [{
+                label: dados.titulo,
+                data: dados.valores,
+                backgroundColor: Array.isArray(dados.cores) ? dados.cores : [dados.cores],
+            }]
+        }
+    });
+}
+
+// Carrega os dados e cria os gráficos ao carregar a página
+document.addEventListener('DOMContentLoaded', carregarDadosGraficos);
+    </script>
+</body>
+</html>

@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cadastro de Funcionário</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #F7F7F7;
+            margin: 0;
+            padding: 0;
+        }
+        header {
+            background-color: #030a23;
+            color: white;
+            padding: 15px;
+            text-align: center;
+        }
+        .container {
+            width: 80%;
+            margin: 20px auto;
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+        }
+        input, select, button {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        button {
+            background-color: #030a23;
+            color: white;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #030a23;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Cadastro de Novo Funcionário</h1>
+    </header>
+    <div class="container">
+        <form id="cadastroFuncionarioForm" action="processar_cadastro.php" method="POST" enctype="multipart/form-data">
+            <label for="nome">Nome Completo:</label>
+            <input type="text" id="nome" name="nome" required>
+
+            <label for="email">Email:</label>
+            <input type="email" id="email" name="email" required>
+
+            <label for="senha">Senha:</label>
+            <input type="password" id="senha" name="senha" required>
+
+            <label for="cargo">Cargo:</label>
+            <select id="cargo" name="cargo" required>
+                <option value="">Selecione um cargo</option>
+            </select>
+
+            <label for="departamento">Departamento:</label>
+            <select id="departamento" name="departamento" required>
+                <option value="">Selecione um departamento</option>
+            </select>
+
+            <label for="dataAdmissao">Data de Admissão:</label>
+            <input type="date" id="dataAdmissao" name="dataAdmissao" required>
+
+            <label for="status">Status:</label>
+            <select id="status" name="status" required>
+                <option value="Ativo">Ativo</option>
+                <option value="Inativo">Inativo</option>
+            </select>
+
+            <!-- Upload de Documentos -->
+            <h3>Documentos do Funcionário</h3>
+            <label for="rgCpf">Cópia RG e CPF:</label>
+            <input type="file" id="rgCpf" name="documentos[rgCpf]" required>
+
+            <label for="carteiraTrabalho">Carteira de Trabalho:</label>
+            <input type="file" id="carteiraTrabalho" name="documentos[carteiraTrabalho]">
+
+            <label for="comprovanteEndereco">Comprovante de Endereço:</label>
+            <input type="file" id="comprovanteEndereco" name="documentos[comprovanteEndereco]">
+
+            <button type="submit">Cadastrar Funcionário</button>
+        </form>     
+    </div>
+
+    <script>
+        document.getElementById('cadastroFuncionarioForm').addEventListener('submit', function (e) {
+    e.preventDefault(); // Impede o envio tradicional do formulário
+
+    const formData = new FormData(this);
+
+    fetch('processar_cadastro.php', {
+        method: 'POST',
+        body: formData
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.status === 'success') {
+            // Exibe a mensagem de sucesso com animação
+            showSuccessMessage(data.message);
+
+            // Limpa os campos do formulário
+            document.getElementById('cadastroFuncionarioForm').reset();
+        } else {
+            alert('Erro: ' + data.message);
+        }
+    })
+    .catch(error => console.error('Erro:', error));
+});
+
+function showSuccessMessage(message) {
+    const successDiv = document.createElement('div');
+    successDiv.textContent = message;
+    successDiv.style.position = 'fixed';
+    successDiv.style.top = '20px';
+    successDiv.style.left = '50%';
+    successDiv.style.transform = 'translateX(-50%)';
+    successDiv.style.backgroundColor = '#4CAF50';
+    successDiv.style.color = 'white';
+    successDiv.style.padding = '15px';
+    successDiv.style.borderRadius = '5px';
+    successDiv.style.boxShadow = '0px 4px 8px rgba(0, 0, 0, 0.2)';
+    successDiv.style.zIndex = '1000';
+    successDiv.style.opacity = '0';
+    successDiv.style.transition = 'opacity 0.5s ease';
+
+    document.body.appendChild(successDiv);
+
+    setTimeout(() => {
+        successDiv.style.opacity = '1'; // Animação para aparecer
+    }, 10);
+
+    setTimeout(() => {
+        successDiv.style.opacity = '0'; // Animação para desaparecer
+        setTimeout(() => {
+            document.body.removeChild(successDiv);
+        }, 500);
+    }, 3000); // Remove após 3 segundos
+}
+        // Carregar cargos dinamicamente
+        fetch('../buscar_cargos.php')
+            .then(response => response.json())
+            .then(data => {
+                const cargoSelect = document.getElementById('cargo');
+                data.forEach(cargo => {
+                    const option = document.createElement('option');
+                    option.value = cargo;
+                    option.textContent = cargo;
+                    cargoSelect.appendChild(option);
+                });
+            })
+            .catch(error => console.error('Erro ao carregar os cargos:', error));
+
+        // Carregar departamentos dinamicamente
+        fetch('../buscar_departamentos.php')
+            .then(response => response.json())
+            .then(data => {
+                const departamentoSelect = document.getElementById('departamento');
+                data.forEach(departamento => {
+                    const option = document.createElement('option');
+                    option.value = departamento;
+                    option.textContent = departamento;
+                    departamentoSelect.appendChild(option);
+                });
+            })
+            .catch(error => console.error('Erro ao carregar os departamentos:', error));
+    </script>
+</body>
+</html>

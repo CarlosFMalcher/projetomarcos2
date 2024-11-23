@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gerenciamento de Funcionários</title>
+</head>
+<body>
+    <style>
+        /* Estilo geral */
+           body {
+              font-family: Arial, sans-serif;
+              margin: 0;
+              padding: 0;
+              background-color: #f4f4f4; /* Fundo claro */
+              color: #333333; /* Texto primário */
+          }
+  
+          header {
+              background-color: #030a23; /* Azul escuro quase preto */
+              color: white;
+              padding: 15px;
+              display: flex;
+              align-items: center;
+              justify-content:center;
+              position: relative;
+          }
+  
+          header h1 {
+             margin: 0 auto ;
+             font-size: 24px;
+             text-align: center;
+             flex: 1;
+          }
+  
+          .header-buttons {
+              display: flex;
+              gap: 15px;
+          }
+  
+          .btn-header {
+              background-color: #3c3c3c; /* Cinza escuro */
+              color: white;
+              padding: 8px 12px;
+              border: none;
+              border-radius: 5px;
+              cursor: pointer;
+              font-size: 14px;
+              text-decoration: none;
+              transition: background-color 0.3s ease;
+          }
+  
+          .btn-header:hover {
+              background-color: #030a23; /* Azul escuro */
+          }
+  
+          .container {
+              width: 80%;
+              margin: 20px auto;
+              background: #ffffff; /* Branco puro */
+              border-radius: 8px;
+              padding: 20px;
+              box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+          }
+  
+          .btn {
+              background-color: #030a23; /* Azul escuro quase preto */
+              color: white;
+              padding: 10px 15px;
+              border: none;
+              border-radius: 5px;
+              cursor: pointer;
+              text-decoration: none;
+              display: inline-block;
+              margin: 10px 0;
+          }
+  
+          .btn:hover {
+              background-color: #3c3c3c; /* Cinza escuro */
+          }
+  
+          table {
+              width: 100%;
+              border-collapse: collapse;
+              margin-top: 20px;
+          }
+  
+          th, td {
+              border: 1px solid #ddd;
+              text-align: left;
+              padding: 8px;
+          }
+  
+          th {
+              background-color: #030a23; /* Azul escuro quase preto */
+              color: white;
+          }
+  
+          .filter-container {
+              display: flex;
+              justify-content: space-between;
+              align-items: center;
+              margin-bottom: 20px;
+          }
+  
+          select, input {
+              padding: 8px;
+              font-size: 14px;
+              border: 1px solid #ddd;
+              border-radius: 5px;
+              background-color: #f4f4f4; /* Fundo claro */
+              color: #333333;
+          }
+  
+          .search-container {
+              display: flex;
+              align-items: center;
+              gap: 5px;
+          }
+  
+          .search-container input {
+              width: 200px;
+              padding: 8px;
+              border: 1px solid #ddd;
+              border-radius: 5px;
+              background-color: #ffffff; /* Branco */
+              color: #333333;
+          }
+          
+  
+      </style>
+<header>
+    <div>
+        <a href="../dashboard/dashboard.html"><button class="btn-header">Voltar</button></a>
+        
+    </div>
+    <h1>Gerenciamento de Funcionários</h1>
+</header>
+
+<div class="container">
+    <div class="filter-container">
+        <div class="search-container">
+            <input type="text" id="searchInput" placeholder="Pesquisar por nome..." oninput="filtrarFuncionarios()">
+        </div>
+        <select id="filtroDepartamento" aria-label="Selecione o Departamento" onchange="filtrarFuncionarios()">
+            <!-- Opções serão carregadas aqui -->
+        </select>
+        
+            <!-- Opções de departamento serão carregadas aqui -->
+        </select>
+    </div>
+    <div class="header-buttons">
+        <button class="btn-header" onclick="window.location.href='../gerenciamento_funcionario/cadastro_funcionario/cadastrarFuncionario.html'">Cadastrar Novo Funcionário</button>
+    </div>
+    <table id="tabelaFuncionarios">
+        <thead>
+            <tr>
+                <th>Nome</th>
+                <th>Cargo</th>
+                <th>Departamento</th>
+                <th>Data de Admissão</th>
+                <th>Status</th>
+                <th>Ações</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Funcionários serão carregados aqui -->
+        </tbody>
+    </table>
+</div>
+
+<!-- Pop-up Modal -->
+<div id="modalEditar" class="modal">
+    <div class="modal-content">
+        <h2>Editar Funcionário</h2>
+        <form id="formEditarFuncionario">
+            <input type="hidden" id="idFuncionario">
+            <label for="nomeFuncionario">Nome:</label>
+            <input type="text" id="nomeFuncionario" required>
+            
+            <label for="cargoFuncionario">Cargo:</label>
+            <input type="text" id="cargoFuncionario" required>
+            
+            <label for="departamentoFuncionario">Departamento:</label>
+            <input type="text" id="departamentoFuncionario" required>
+            
+            <label for="dataAdmissaoFuncionario">Data de Admissão:</label>
+            <input type="date" id="dataAdmissaoFuncionario" required>
+            
+            <label for="statusFuncionario">Status:</label>
+            <select id="statusFuncionario" required>
+                <option value="Ativo">Ativo</option>
+                <option value="Inativo">Inativo</option>
+            </select>
+            
+            <div class="modal-buttons">
+                <button type="button" class="btn" onclick="fecharModal()">Cancelar</button>
+                <button type="submit" class="btn">Confirmar</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<style>
+/* Estilo do modal */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    justify-content: center;
+    align-items: center;
+}
+
+.modal-content {
+    background: #ffffff;
+    padding: 20px;
+    border-radius: 8px;
+    width: 400px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.modal-buttons {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+}
+
+.modal-buttons .btn {
+    background-color: #1a1a2e;
+    color: white;
+    padding: 8px 12px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    text-decoration: none;
+}
+
+.modal-buttons .btn:hover {
+    background-color: #3c3c3c;
+}
+</style>
+
+
+<script>
+// Carrega os departamentos e preenche o filtro
+async function carregarDepartamentos() {
+    try {
+        const response = await fetch('buscar_departamentos.php');
+        const departamentos = await response.json();
+
+        const filtroDepartamento = document.getElementById('filtroDepartamento');
+        filtroDepartamento.innerHTML = `<option value="todos">Todos os Departamentos</option>`;
+
+        departamentos.forEach(departamento => {
+            filtroDepartamento.innerHTML += `<option value="${departamento}">${departamento}</option>`;
+        });
+    } catch (error) {
+        console.error('Erro ao carregar departamentos:', error);
+        alert('Erro ao carregar os departamentos. Verifique o console.');
+    }
+}
+
+// Carrega os funcionários e armazena no sessionStorage
+async function carregarFuncionarios(filtro = 'todos', pesquisa = '') {
+    try {
+        const response = await fetch(`buscar_funcionarios.php?filtro=${filtro}&pesquisa=${pesquisa}`);
+        const funcionarios = await response.json();
+        console.log("Funcionários carregados:", funcionarios);
+
+
+        if (Array.isArray(funcionarios)) {
+            sessionStorage.setItem('funcionarios', JSON.stringify(funcionarios)); // Armazena no sessionStorage
+            atualizarTabela(funcionarios); // Atualiza a tabela
+        } else {
+            console.error('Erro: A resposta não é um array de funcionários.');
+            alert('Erro ao carregar funcionários. Verifique o console.');
+        }
+    } catch (error) {
+        console.error('Erro ao carregar funcionários:', error);
+        alert('Erro ao carregar os funcionários. Verifique o console.');
+    }
+}
+
+// Atualiza a tabela com os dados dos funcionários
+function atualizarTabela(funcionarios) {
+    const tabela = document.getElementById('tabelaFuncionarios').querySelector('tbody');
+    tabela.innerHTML = ''; // Limpa a tabela antes de preenchê-la novamente
+
+    funcionarios.forEach(funcionario => {
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+            <td>${funcionario.nome}</td>
+            <td>${funcionario.cargo}</td>
+            <td>${funcionario.departamento}</td>
+            <td>${funcionario.data_admissao}</td>
+            <td>${funcionario.status}</td>
+            <td><button class="btn" onclick="editarFuncionario(${funcionario.id_funcionario})">Editar</button></td>
+        `;
+        tabela.appendChild(tr);
+    });
+}
+
+// Filtra os funcionários com base no departamento e na pesquisa
+function filtrarFuncionarios() {
+    const filtro = document.getElementById('filtroDepartamento').value;
+    const pesquisa = document.getElementById('searchInput').value.toLowerCase();
+
+    const funcionarios = JSON.parse(sessionStorage.getItem('funcionarios') || '[]');
+    const funcionariosFiltrados = funcionarios.filter(func =>
+        (filtro === 'todos' || func.departamento === filtro) &&
+        func.nome.toLowerCase().includes(pesquisa)
+    );
+
+    atualizarTabela(funcionariosFiltrados); // Atualiza a tabela com o filtro aplicado
+}
+
+// Abre o modal de edição
+function editarFuncionario(id_funcionario) {
+    console.log("ID recebido:", id_funcionario);
+    const funcionarios = JSON.parse(sessionStorage.getItem('funcionarios') || '[]');
+    console.log("Funcionários no sessionStorage:", funcionarios);
+    const funcionario = funcionarios.find(func => func.id_funcionario === id_funcionario);
+
+    if (funcionario) {
+        // Preenche o modal com os dados do funcionário
+        document.getElementById('idFuncionario').value = funcionario.id_funcionario;
+        document.getElementById('nomeFuncionario').value = funcionario.nome;
+        document.getElementById('cargoFuncionario').value = funcionario.cargo;
+        document.getElementById('departamentoFuncionario').value = funcionario.departamento;
+        document.getElementById('dataAdmissaoFuncionario').value = funcionario.data_admissao;
+        document.getElementById('statusFuncionario').value = funcionario.status;
+
+        abrirModal();
+    } else {
+        alert('Funcionário não encontrado.');
+    }
+}
+
+// Abre o modal
+function abrirModal() {
+    document.getElementById('modalEditar').style.display = 'flex';
+}
+
+// Fecha o modal
+function fecharModal() {
+    document.getElementById('modalEditar').style.display = 'none';
+}
+
+// Atualiza os dados do funcionário no banco
+document.getElementById('formEditarFuncionario').addEventListener('submit', async (e) => {
+    e.preventDefault();
+
+    const id_funcionario = document.getElementById('idFuncionario').value;
+    const nome = document.getElementById('nomeFuncionario').value;
+    const cargo = document.getElementById('cargoFuncionario').value;
+    const departamento = document.getElementById('departamentoFuncionario').value;
+    const data_admissao = document.getElementById('dataAdmissaoFuncionario').value; // Corrigido
+    const status = document.getElementById('statusFuncionario').value;
+
+    console.log("Dados enviados:", { id_funcionario, nome, cargo, departamento, data_admissao, status });
+
+    try {
+        const response = await fetch('atualizar_funcionario.php', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ id_funcionario, nome, cargo, departamento, data_admissao, status })
+        });
+
+        if (!response.ok) {
+            const errorText = await response.text();
+            console.error('Erro HTTP:', errorText);
+            throw new Error(`Erro HTTP ${response.status}: ${errorText}`);
+        }
+
+        const result = await response.json();
+        console.log('Resposta do servidor:', result);
+
+        if (result.success) {
+            alert(result.message);
+            carregarFuncionarios();
+            fecharModal();
+        } else {
+            alert(`Erro ao atualizar funcionário: ${result.message || 'Erro desconhecido.'}`);
+        }
+    } catch (error) {
+        console.error('Erro ao atualizar funcionário:', error);
+        alert('Erro ao atualizar funcionário. Verifique o console para mais detalhes.');
+    }
+});
+
+
+// Inicializa os dados na página
+document.addEventListener('DOMContentLoaded', () => {
+    carregarDepartamentos(); // Carrega os departamentos
+    carregarFuncionarios(); // Carrega todos os funcionários
+});
+</script>
+</body>
+</html>

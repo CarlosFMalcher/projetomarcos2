@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Relatórios Administrativos</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f7f7f7;
+            color: #333;
+        }
+
+        header {
+            background-color: #030a23;
+            color: white;
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        header h1 {
+            font-size: 20px;
+        }
+
+        header button {
+            background-color: white;
+            color: #030a23;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 5px;
+            font-size: 14px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        header button:hover {
+            background-color: #dcdcdc;
+        }
+
+        nav {
+            width: 250px;
+            background-color: #030a23;
+            height: 100vh;
+            position: fixed;
+            top: 0;
+            left: -250px;
+            color: white;
+            padding-top: 20px;
+            transition: left 0.3s ease;
+        }
+
+        nav.active {
+            left: 0;
+        }
+
+        nav ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        nav ul li a {
+            display: block;
+            padding: 10px 20px;
+            text-decoration: none;
+            color: white;
+            transition: background-color 0.3s ease;
+        }
+
+        nav ul li a:hover {
+            background-color: #050f33;
+        }
+
+        .menu-toggle {
+            font-size: 24px;
+            color: white;
+            background: none;
+            border: none;
+            cursor: pointer;
+        }
+
+        main {
+            margin-left: 0;
+            padding: 20px;
+            transition: margin-left 0.3s ease;
+        }
+
+        nav.active + main {
+            margin-left: 260px;
+        }
+
+        .relatorio {
+            background-color: white;
+            margin-bottom: 20px;
+            padding: 15px;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        h2 {
+            margin-bottom: 15px;
+            color: #030a23;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 15px;
+        }
+
+        table th, table td {
+            padding: 10px;
+            text-align: left;
+            border: 1px solid #ddd;
+        }
+
+        table th {
+            background-color: #030a23;
+            color: white;
+        }
+
+        table tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+
+        button.export-btn {
+            background-color: #030a23;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        button.export-btn:hover {
+            background-color: #050f33;
+        }
+
+        .filter-container {
+            margin-bottom: 15px;
+            display: flex;
+            gap: 10px;
+        }
+
+        .filter-container input, .filter-container select {
+            padding: 8px;
+            font-size: 14px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        
+        <a href="../dashboard/dashboard.html"><button class="btn-header">Voltar</button></a>
+        
+        <h1>Relatórios Administrativos</h1>
+        <button class="menu-toggle" id="menuToggle">☰</button>
+    </header>
+    <nav id="sidebar">
+        <ul>
+            <li><a href="#ponto">Relatório de Ponto</a></li>
+            <li><a href="#pagamentos">Relatório de Pagamentos</a></li>
+            <li><a href="#jornada">Relatório de Jornada</a></li>
+            <li><a href="#faltas">Relatório de Faltas</a></li>
+            <li><a href="#tarefas">Relatório de Tarefas</a></li>
+            <li><a href="#beneficios">Relatório de Benefícios</a></li>
+            <li><a href="#auditoria">Relatório de Auditoria</a></li>
+            <li><a href="#solicitacoes">Relatório de Solicitações</a></li>
+            <li><a href="#custos">Relatório Consolidado de Custos</a></li>
+            <li><a href="#treinamentos">Relatório de Treinamentos</a></li>
+            <li><a href="#ferias">Relatório de Férias</a></li>
+            <li><a href="#feedbacks">Relatório de Feedbacks</a></li>
+        </ul>
+    </nav>
+    <main>
+        <div id="ponto" class="relatorio">
+            <h2>Relatório de Ponto e Frequência</h2>
+            <div class="filter-container">
+                <input type="date" placeholder="Data Inicial">
+                <input type="date" placeholder="Data Final">
+                <select>
+                    <option value="">Todos</option>
+                    <option value="funcionario">Funcionário</option>
+                    <option value="prestador">Prestador</option>
+                </select>
+                <button>Filtrar</button>
+            </div>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Nome</th>
+                        <th>Data</th>
+                        <th>Entrada</th>
+                        <th>Saída</th>
+                        <th>Status</th>
+                        <th>Horas Trabalhadas</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>João Silva</td>
+                        <td>22/11/2024</td>
+                        <td>08:00</td>
+                        <td>17:00</td>
+                        <td>Presente</td>
+                        <td>8h</td>
+                    </tr>
+                    <tr>
+                        <td>Maria Oliveira</td>
+                        <td>22/11/2024</td>
+                        <td>09:00</td>
+                        <td>18:00</td>
+                        <td>Atraso</td>
+                        <td>7h</td>
+                    </tr>
+                </tbody>
+            </table>
+            <button class="export-btn">Extrair Relatório</button>
+        </div>
+        
+
+        <div id="pagamentos" class="relatorio">
+            <h2>Relatório de Pagamentos</h2>
+            <div class="filter-container">
+                <input type="date" placeholder="Data Inicial">
+                <input type="date" placeholder="Data Final">
+                <select>
+                    <option value="">Todos</option>
+                    <option value="salario">Salário</option>
+                    <option value="beneficio">Benefício</option>
+                </select>
+                <button>Filtrar</button>
+            </div>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Nome</th>
+                        <th>Data</th>
+                        <th>Valor Bruto</th>
+                        <th>Descontos</th>
+                        <th>Valor Líquido</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>João Silva</td>
+                        <td>30/11/2024</td>
+                        <td>R$ 5.000,00</td>
+                        <td>R$ 500,00</td>
+                        <td>R$ 4.500,00</td>
+                        <td>Pago</td>
+                    </tr>
+                    <tr>
+                        <td>Maria Oliveira</td>
+                        <td>30/11/2024</td>
+                        <td>R$ 4.000,00</td>
+                        <td>R$ 400,00</td>
+                        <td>R$ 3.600,00</td>
+                        <td>Pago</td>
+                    </tr>
+                </tbody>
+            </table>
+            <button class="export-btn">Extrair Relatório</button>
+        </div>
+        <div id="jornada" class="relatorio">
+            <h2>Relatório de Jornada de Trabalho</h2>
+            <div class="filter-container">
+                <input type="date" placeholder="Data Inicial">
+                <input type="date" placeholder="Data Final">
+                <button>Filtrar</button>
+            </div>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Nome</th>
+                        <th>Data</th>
+                        <th>Horas Trabalhadas</th>
+                        <th>Horas Extras</th>
+                        <th>Saldo de Banco de Horas</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>João Silva</td>
+                        <td>22/11/2024</td>
+                        <td>8h</td>
+                        <td>2h</td>
+                        <td>10h</td>
+                    </tr>
+                    <tr>
+                        <td>Maria Oliveira</td>
+                        <td>22/11/2024</td>
+                        <td>7h</td>
+                        <td>1h</td>
+                        <td>5h</td>
+                    </tr>
+                </tbody>
+            </table>
+            <button class="export-btn">Extrair Relatório</button>
+        </div>
+        <div id="faltas" class="relatorio">
+            <h2>Relatório de Faltas e Atrasos</h2>
+            <div class="filter-container">
+                <input type="date" placeholder="Data Inicial">
+                <input type="date" placeholder="Data Final">
+                <button>Filtrar</button>
+            </div>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Nome</th>
+                        <th>Data</th>
+                        <th>Tipo de Ocorrência</th>
+                        <th>Justificativa</th>
+                        <th>Status da Justificativa</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>João Silva</td>
+                        <td>20/11/2024</td>
+                        <td>Falta</td>
+                        <td>Consulta médica</td>
+                        <td>Aprovada</td>
+                    </tr>
+                    <tr>
+                        <td>Maria Oliveira</td>
+                        <td>21/11/2024</td>
+                        <td>Atraso</td>
+                        <td>Trânsito</td>
+                        <td>Pendente</td>
+                    </tr>
+                </tbody>
+            </table>
+            <button class="export-btn">Extrair Relatório</button>
+        </div>
+        <div id="tarefas" class="relatorio">
+            <h2>Relatório de Tarefas e Projetos</h2>
+            <div class="filter-container">
+                <input type="date" placeholder="Data Inicial">
+                <input type="date" placeholder="Data Final">
+                <select>
+                    <option value="">Todos os Projetos</option>
+                    <option value="projeto1">Projeto 1</option>
+                    <option value="projeto2">Projeto 2</option>
+                </select>
+                <button>Filtrar</button>
+            </div>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Nome</th>
+                        <th>Tarefa</th>
+                        <th>Data de Início</th>
+                        <th>Prazo Final</th>
+                        <th>Status</th>
+                        <th>Horas Alocadas</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>João Silva</td>
+                        <td>Desenvolver relatório</td>
+                        <td>10/11/2024</td>
+                        <td>20/11/2024</td>
+                        <td>Concluído</td>
+                        <td>15h</td>
+                    </tr>
+                    <tr>
+                        <td>Maria Oliveira</td>
+                        <td>Atualizar sistema</td>
+                        <td>15/11/2024</td>
+                        <td>25/11/2024</td>
+                        <td>Em andamento</td>
+                        <td>10h</td>
+                    </tr>
+                </tbody>
+            </table>
+            <button class="export-btn">Extrair Relatório</button>
+        </div>
+                                
+
+        <!-- Adicione mais tabelas semelhantes para os demais relatórios -->
+    </main>
+    <script>
+        const menuToggle = document.getElementById('menuToggle');
+        const sidebar = document.getElementById('sidebar');
+
+        menuToggle.addEventListener('click', () => {
+            sidebar.classList.toggle('active');
+        });
+    </script>
+</body>
+</html>

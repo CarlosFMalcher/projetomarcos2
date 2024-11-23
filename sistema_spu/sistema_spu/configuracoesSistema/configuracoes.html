@@ -1,0 +1,581 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Configurações</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #1e1e2f; /* Azul escuro quase preto */
+            color: #e0e0e0; /* Cinza claro */
+        }
+        header {
+            background-color: #2c2c3e; /* Cinza escuro */
+            color: #e0e0e0;
+            padding: 15px 20px;
+            text-align: center;
+            border-bottom: 1px solid #3a3a4d;
+        }
+        nav {
+            display: flex;
+            flex-direction: column;
+            width: 250px;
+            height: 100vh;
+            background-color: #2a2a3b; /* Cinza médio */
+            color: #fff;
+            position: fixed;
+            top: 0;
+            left: 0;
+            overflow-y: auto;
+            border-right: 1px solid #3a3a4d;
+        }
+        nav a {
+            padding: 15px;
+            text-decoration: none;
+            color: #e0e0e0; /* Cinza claro */
+            border-bottom: 1px solid #3a3a4d;
+            font-size: 14px;
+        }
+        nav a:hover {
+            background-color: #1a1a2b; /* Azul escuro mais intenso */
+        }
+        main {
+            margin-left: 260px;
+            padding: 20px;
+        }
+        section {
+            background: #2c2c3e; /* Cinza escuro */
+            margin-bottom: 20px;
+            border: 1px solid #3a3a4d;
+            border-radius: 5px;
+            padding: 15px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+        }
+        h2 {
+            border-bottom: 2px solid #3b5998; /* Azul contrastante */
+            padding-bottom: 5px;
+            margin-bottom: 15px;
+            color: #3b5998;
+        }
+        label {
+            display: block;
+            margin: 10px 0 5px;
+            color: #e0e0e0;
+        }
+        input, select, textarea {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #3a3a4d;
+            border-radius: 5px;
+            background-color: #1e1e2f; /* Azul escuro quase preto */
+            color: #e0e0e0;
+        }
+        input:focus, select:focus, textarea:focus {
+            border-color: #3b5998; /* Azul contrastante */
+        }
+        button {
+            background-color: #3b5998; /* Azul contrastante */
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+        button:hover {
+            background-color: #2c477a; /* Azul escuro */
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Configurações do Sistema</h1>
+    </header>
+
+     
+    <nav>
+        <a href="../dashboard/dashboard.html"><button class="btn-header">Voltar</button></a>
+        <a href="#gerais">Configurações Gerais</a>
+        <a href="#usuario">Configurações de Usuário</a>
+        <a href="#sistema">Configurações de Sistema</a>
+        <a href="#notificacoes">Configurações de Notificações</a>
+        <a href="#integracoes">Integrações e API</a>
+        <a href="#seguranca">Segurança e Privacidade</a>
+        <a href="#negocio">Configurações do Negócio</a>
+        <a href="#relatorios">Relatórios e Auditorias</a>
+        <a href="#avancadas">Configurações Avançadas</a>
+    </nav>
+    <main>
+        <!-- Configurações Gerais -->
+        <section id="gerais">
+            <h2>Configurações Gerais</h2>
+        
+            <!-- Idioma e Localização -->
+            <h3>Idioma e Localização</h3>
+            <label for="idioma">Idioma</label>
+            <select id="idioma">
+                <option value="pt-br">Português</option>
+                <option value="en">Inglês</option>
+            </select>
+        
+            <label for="formato-data-hora">Formato de Data e Hora</label>
+            <select id="formato-data-hora">
+                <option value="dd-mm-yyyy">DD/MM/YYYY</option>
+                <option value="mm-dd-yyyy">MM/DD/YYYY</option>
+            </select>
+        
+            <label for="fuso-horario">Fuso Horário</label>
+            <select id="fuso-horario">
+                <option value="utc-3">UTC-3 (Brasília)</option>
+                <option value="utc-5">UTC-5 (Manaus)</option>
+                <option value="utc-0">UTC+0 (Londres)</option>
+            </select>
+        
+            <!-- Tema e Aparência -->
+            <h3>Tema e Aparência</h3>
+            <label for="tema">Tema</label>
+            <select id="tema">
+                <option value="claro">Claro</option>
+                <option value="escuro">Escuro</option>
+            </select>
+        
+            <label for="fundo-tela">Escolher Fundo de Tela</label>
+            <select id="fundo-tela">
+                <option value="opcao1">Opção 1</option>
+                <option value="opcao2">Opção 2</option>
+                <option value="opcao3">Opção 3</option>
+            </select>
+            <label for="upload-fundo">Anexar Imagem para Fundo</label>
+            <input type="file" id="upload-fundo" accept="image/*">
+        
+            <label for="paleta-cores">Paleta de Cores</label>
+            <input type="color" id="paleta-cores" value="#3b5998">
+        
+            <label for="ajuste-fonte">Ajuste de Fonte/Tamanho</label>
+            <select id="ajuste-fonte">
+                <option value="pequeno">Pequeno</option>
+                <option value="medio">Médio</option>
+                <option value="grande">Grande</option>
+            </select>
+        
+            <!-- Personalização de Layout -->
+            <h3>Personalização de Layout</h3>
+            <label for="ordenacao-secoes">Ordenação de Seções</label>
+            <select id="ordenacao-secoes">
+                <option value="padrao">Padrão</option>
+                <option value="personalizado">Personalizado</option>
+            </select>
+        
+            <label for="itens-menu">Itens Visíveis no Menu</label>
+            <select id="itens-menu" multiple>
+                <option value="dashboard">Dashboard</option>
+                <option value="usuarios">Usuários</option>
+                <option value="relatorios">Relatórios</option>
+                <option value="configuracoes">Configurações</option>
+            </select>
+        </section>
+        
+        <section id="usuario">
+            <h2>Configurações de Usuário</h2>
+        
+            <!-- Perfil do Usuário -->
+            <h3>Perfil do Usuário</h3>
+            <label for="nome-usuario">Nome</label>
+            <input type="text" id="nome-usuario" placeholder="Insira seu nome completo">
+        
+            <label for="email-usuario">Email</label>
+            <input type="email" id="email-usuario" placeholder="exemplo@email.com">
+        
+            <label for="telefone-usuario">Telefone</label>
+            <input type="tel" id="telefone-usuario" placeholder="(00) 00000-0000">
+        
+            <label for="senha-usuario">Nova Senha</label>
+            <input type="password" id="senha-usuario" placeholder="Digite sua nova senha">
+        
+            <label for="confirmar-senha">Confirmar Nova Senha</label>
+            <input type="password" id="confirmar-senha" placeholder="Confirme sua nova senha">
+        
+            <label for="foto-perfil">Upload de Foto de Perfil</label>
+            <input type="file" id="foto-perfil" accept="image/*">
+        
+            <button>Salvar Alterações</button>
+        
+            <!-- Permissões e Acessos -->
+            <h3>Permissões e Acessos</h3>
+            <label for="nivel-acesso">Nível de Acesso</label>
+            <select id="nivel-acesso">
+                <option value="administrador">Administrador</option>
+                <option value="colaborador">Colaborador</option>
+                <option value="visitante">Visitante</option>
+            </select>
+        
+            <label for="modulos-acesso">Controle de Acesso a Módulos</label>
+            <select id="modulos-acesso" multiple>
+                <option value="dashboard">Dashboard</option>
+                <option value="usuarios">Gerenciamento de Usuários</option>
+                <option value="relatorios">Relatórios</option>
+                <option value="configuracoes">Configurações</option>
+            </select>
+        
+            <button>Atualizar Permissões</button>
+        </section>
+        <section id="sistema">
+            <h2>Configurações de Sistema</h2>
+        
+            <!-- Gestão de Usuários -->
+            <h3>Gestão de Usuários</h3>
+            <label for="nome-usuario">Nome do Usuário</label>
+            <input type="text" id="nome-usuario" placeholder="Nome do usuário">
+        
+            <label for="email-usuario">Email</label>
+            <input type="email" id="email-usuario" placeholder="Email do usuário">
+        
+            <label for="nivel-acesso">Nível de Acesso</label>
+            <select id="nivel-acesso">
+                <option value="administrador">Administrador</option>
+                <option value="colaborador">Colaborador</option>
+                <option value="visitante">Visitante</option>
+            </select>
+        
+            <button>Cadastrar Usuário</button>
+            <button>Editar Usuário</button>
+            <button>Excluir Usuário</button>
+        
+            <h4>Reset de Senha</h4>
+            <label for="reset-email">Email do Usuário</label>
+            <input type="email" id="reset-email" placeholder="Digite o email para resetar a senha">
+            <button>Resetar Senha</button>
+        
+            <h4>Logs de Atividade</h4>
+            <div style="overflow-x:auto;">
+                <table style="width:100%; border-collapse:collapse; background-color:#2c2c3e; color:#e0e0e0; margin-top:15px;">
+                    <thead>
+                        <tr style="border-bottom: 2px solid #3b5998;">
+                            <th style="padding:10px;">Data</th>
+                            <th style="padding:10px;">Usuário</th>
+                            <th style="padding:10px;">Ação</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td style="padding:10px; border-bottom:1px solid #3a3a4d;">2024-11-22</td>
+                            <td style="padding:10px; border-bottom:1px solid #3a3a4d;">admin</td>
+                            <td style="padding:10px; border-bottom:1px solid #3a3a4d;">Usuário Cadastrado</td>
+                        </tr>
+                        <tr>
+                            <td style="padding:10px; border-bottom:1px solid #3a3a4d;">2024-11-22</td>
+                            <td style="padding:10px; border-bottom:1px solid #3a3a4d;">joao</td>
+                            <td style="padding:10px; border-bottom:1px solid #3a3a4d;">Senha Resetada</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        
+            <!-- Configuração de Padrões -->
+            <h3>Configuração de Padrões</h3>
+            <label for="fuso-horario-padrao">Fuso Horário Padrão</label>
+            <select id="fuso-horario-padrao">
+                <option value="utc-3">UTC-3 (Brasília)</option>
+                <option value="utc-5">UTC-5 (Manaus)</option>
+                <option value="utc-0">UTC+0 (Londres)</option>
+            </select>
+        
+            <label for="limite-arquivos">Limite de Upload (MB)</label>
+            <input type="number" id="limite-arquivos" placeholder="Ex.: 50" min="1" max="500">
+        
+            <button>Salvar Configurações Padrão</button>
+        </section>
+
+        <section id="notificacoes">
+            <h2>Configurações de Notificações</h2>
+        
+            <!-- Preferências de Notificação -->
+            <h3>Preferências de Notificação</h3>
+            <label for="notificacao-email">
+                <input type="checkbox" id="notificacao-email" checked> Notificações por Email
+            </label>
+            <label for="notificacao-push">
+                <input type="checkbox" id="notificacao-push"> Notificações Push
+            </label>
+            <label for="notificacao-sms">
+                <input type="checkbox" id="notificacao-sms"> Notificações por SMS
+            </label>
+        
+            <label for="frequencia-notificacao">Frequência das Notificações</label>
+            <select id="frequencia-notificacao">
+                <option value="imediato">Imediato</option>
+                <option value="diario">Diário</option>
+                <option value="semanal">Semanal</option>
+            </select>
+        
+            <!-- Alertas e Lembretes -->
+            <h3>Alertas e Lembretes</h3>
+            <label for="prazos-notificacao">
+                <input type="checkbox" id="prazos-notificacao"> Notificar sobre prazos
+            </label>
+            <label for="atualizacoes-notificacao">
+                <input type="checkbox" id="atualizacoes-notificacao" checked> Notificar sobre atualizações do sistema
+            </label>
+            <label for="erros-notificacao">
+                <input type="checkbox" id="erros-notificacao"> Notificar sobre erros
+            </label>
+        
+            <button>Salvar Configurações</button>
+        </section>
+        
+
+        <!-- Integrações e API -->
+        <section id="integracoes">
+            <h2>Integrações e API</h2>
+        
+            <!-- Integrações com Terceiros -->
+            <h3>Integrações com Terceiros</h3>
+            <label for="servico-externo">Nome do Serviço Externo</label>
+            <input type="text" id="servico-externo" placeholder="Exemplo: API de Pagamento">
+        
+            <label for="chave-api">Chave de API</label>
+            <input type="text" id="chave-api" placeholder="Insira sua chave de API">
+        
+            <label for="token-acesso">Token de Acesso</label>
+            <input type="text" id="token-acesso" placeholder="Insira seu token">
+        
+            <button>Salvar Integração</button>
+        
+            <!-- Configuração de Webhooks -->
+            <h3>Configuração de Webhooks</h3>
+            <label for="webhook-url">URL do Webhook</label>
+            <input type="url" id="webhook-url" placeholder="https://exemplo.com/webhook">
+        
+            <label for="evento-webhook">Evento do Webhook</label>
+            <select id="evento-webhook">
+                <option value="notificacao">Notificação</option>
+                <option value="erro">Erro</option>
+                <option value="atualizacao">Atualização</option>
+            </select>
+        
+            <button>Salvar Webhook</button>
+        </section>        
+
+        <!-- Segurança e Privacidade -->
+        <section id="seguranca">
+            <h2>Segurança e Privacidade</h2>
+        
+            <!-- Controle de Acesso -->
+            <h3>Controle de Acesso</h3>
+            <label for="complexidade-senha">Complexidade da Senha</label>
+            <select id="complexidade-senha">
+                <option value="alta">Alta (8+ caracteres, números, símbolos)</option>
+                <option value="media">Média (6+ caracteres, números)</option>
+                <option value="baixa">Baixa (4+ caracteres)</option>
+            </select>
+        
+            <label for="expiracao-senha">Expiração da Senha (em dias)</label>
+            <input type="number" id="expiracao-senha" placeholder="Ex.: 90" min="0" step="1">
+        
+            <label for="autenticacao-2fa">
+                <input type="checkbox" id="autenticacao-2fa"> Ativar Autenticação em Duas Etapas (2FA)
+            </label>
+        
+            <button>Salvar Configurações de Acesso</button>
+        
+            <!-- Privacidade de Dados -->
+            <h3>Privacidade de Dados</h3>
+            <label for="compartilhamento-dados">
+                <input type="checkbox" id="compartilhamento-dados"> Permitir Compartilhamento de Dados
+            </label>
+        
+            <button>Exportar Dados Pessoais</button>
+            <button>Excluir Dados Pessoais</button>
+        
+            <!-- Logs de Segurança -->
+            <h3>Logs de Segurança</h3>
+            <div style="overflow-x:auto;">
+                <table style="width:100%; border-collapse:collapse; background-color:#2c2c3e; color:#e0e0e0; margin-top:15px;">
+                    <thead>
+                        <tr style="border-bottom: 2px solid #3b5998;">
+                            <th style="padding:10px;">Data</th>
+                            <th style="padding:10px;">Usuário</th>
+                            <th style="padding:10px;">Ação</th>
+                            <th style="padding:10px;">IP</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td style="padding:10px; border-bottom:1px solid #3a3a4d;">2024-11-22</td>
+                            <td style="padding:10px; border-bottom:1px solid #3a3a4d;">admin</td>
+                            <td style="padding:10px; border-bottom:1px solid #3a3a4d;">Login Bem-sucedido</td>
+                            <td style="padding:10px; border-bottom:1px solid #3a3a4d;">192.168.0.1</td>
+                        </tr>
+                        <tr>
+                            <td style="padding:10px; border-bottom:1px solid #3a3a4d;">2024-11-21</td>
+                            <td style="padding:10px; border-bottom:1px solid #3a3a4d;">joao</td>
+                            <td style="padding:10px; border-bottom:1px solid #3a3a4d;">Tentativa de Login (Falha)</td>
+                            <td style="padding:10px; border-bottom:1px solid #3a3a4d;">192.168.0.2</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+        <section id="negocio">
+            <h2>Configurações Específicas do Negócio</h2>
+        
+            <!-- Parâmetros de Operação -->
+            <h3>Parâmetros de Operação</h3>
+            <label for="ciclo-pagamento">Ciclo de Pagamento</label>
+            <select id="ciclo-pagamento">
+                <option value="mensal">Mensal</option>
+                <option value="quinzenal">Quinzenal</option>
+                <option value="semanal">Semanal</option>
+            </select>
+        
+            <label for="taxa-desconto">Taxa ou Desconto Padrão (%)</label>
+            <input type="number" id="taxa-desconto" placeholder="Ex.: 5" min="0" step="0.1">
+        
+            <label for="configuracao-beneficios">Configuração de Benefícios</label>
+            <textarea id="configuracao-beneficios" rows="3" placeholder="Ex.: Auxílio-transporte, Vale-refeição"></textarea>
+        
+            <button>Salvar Parâmetros de Operação</button>
+        
+            <!-- Regras Personalizadas -->
+            <h3>Regras Personalizadas</h3>
+            <label for="limite-jornada">Limite de Jornada de Trabalho (horas por dia)</label>
+            <input type="number" id="limite-jornada" placeholder="Ex.: 8" min="0" step="1">
+        
+            <label for="regras-banco-horas">Regras para Banco de Horas</label>
+            <textarea id="regras-banco-horas" rows="3" placeholder="Ex.: Acúmulo máximo de 40 horas"></textarea>
+        
+            <button>Salvar Regras Personalizadas</button>
+        </section>
+            
+
+    <!-- Auditoria de Login -->
+    <h3>Auditoria de Login</h3>
+            <div style="overflow-x:auto;">
+                <table style="width:100%; border-collapse:collapse; background-color:#2c2c3e; color:#e0e0e0; margin-top:15px;">
+                    <thead>
+                        <tr style="border-bottom: 2px solid #3b5998;">
+                            <th style="padding:10px;">Data</th>
+                            <th style="padding:10px;">Hora</th>
+                            <th style="padding:10px;">IP</th>
+                            <th style="padding:10px;">Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td style="padding:10px; border-bottom:1px solid #3a3a4d;">2024-11-22</td>
+                            <td style="padding:10px; border-bottom:1px solid #3a3a4d;">10:45</td>
+                            <td style="padding:10px; border-bottom:1px solid #3a3a4d;">192.168.0.1</td>
+                            <td style="padding:10px; border-bottom:1px solid #3a3a4d;">Sucesso</td>
+                        </tr>
+                        <tr>
+                            <td style="padding:10px; border-bottom:1px solid #3a3a4d;">2024-11-22</td>
+                            <td style="padding:10px; border-bottom:1px solid #3a3a4d;">11:15</td>
+                            <td style="padding:10px; border-bottom:1px solid #3a3a4d;">192.168.0.2</td>
+                            <td style="padding:10px; border-bottom:1px solid #3a3a4d;">Falha</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- Relatórios e Auditorias -->
+        <section id="relatorios">
+            <h2>Relatórios e Auditorias</h2>
+        
+            <!-- Preferências de Relatórios -->
+            <h3>Preferências de Relatórios</h3>
+            <label for="frequencia-relatorio">Frequência dos Relatórios</label>
+            <select id="frequencia-relatorio">
+                <option value="diario">Diário</option>
+                <option value="semanal">Semanal</option>
+                <option value="mensal">Mensal</option>
+            </select>
+        
+            <label for="formato-relatorio">Formato do Relatório</label>
+            <select id="formato-relatorio">
+                <option value="pdf">PDF</option>
+                <option value="excel">Excel</option>
+                <option value="csv">CSV</option>
+            </select>
+        
+            <label for="dados-relatorio">Dados Incluídos no Relatório</label>
+            <textarea id="dados-relatorio" rows="3" placeholder="Ex.: Nome, Email, Acessos"></textarea>
+        
+            <button>Salvar Preferências de Relatórios</button>
+        
+            <!-- Auditorias do Sistema -->
+            <h3>Auditorias do Sistema</h3>
+            <div style="overflow-x:auto;">
+                <table style="width:100%; border-collapse:collapse; background-color:#2c2c3e; color:#e0e0e0; margin-top:15px;">
+                    <thead>
+                        <tr style="border-bottom: 2px solid #3b5998;">
+                            <th style="padding:10px;">Data</th>
+                            <th style="padding:10px;">Usuário</th>
+                            <th style="padding:10px;">Ação</th>
+                            <th style="padding:10px;">Detalhes</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td style="padding:10px; border-bottom:1px solid #3a3a4d;">2024-11-22</td>
+                            <td style="padding:10px; border-bottom:1px solid #3a3a4d;">admin</td>
+                            <td style="padding:10px; border-bottom:1px solid #3a3a4d;">Alterou Configurações</td>
+                            <td style="padding:10px; border-bottom:1px solid #3a3a4d;">Mudança no ciclo de pagamento</td>
+                        </tr>
+                        <tr>
+                            <td style="padding:10px; border-bottom:1px solid #3a3a4d;">2024-11-21</td>
+                            <td style="padding:10px; border-bottom:1px solid #3a3a4d;">joao</td>
+                            <td style="padding:10px; border-bottom:1px solid #3a3a4d;">Adicionou Usuário</td>
+                            <td style="padding:10px; border-bottom:1px solid #3a3a4d;">Usuário: maria</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+        
+
+        <!-- Configurações Avançadas -->
+        <section id="avancadas">
+            <h2>Configurações Avançadas</h2>
+        
+            <!-- Parâmetros Técnicos -->
+            <h3>Parâmetros Técnicos</h3>
+            <label for="servidor-email">Servidor de Email</label>
+            <input type="text" id="servidor-email" placeholder="Ex.: smtp.exemplo.com">
+        
+            <label for="porta-email">Porta de Email</label>
+            <input type="number" id="porta-email" placeholder="Ex.: 587" min="1">
+        
+            <label for="usuario-email">Usuário do Email</label>
+            <input type="text" id="usuario-email" placeholder="Ex.: usuario@exemplo.com">
+        
+            <label for="senha-email">Senha do Email</label>
+            <input type="password" id="senha-email" placeholder="Insira a senha">
+        
+            <label for="limite-upload">Limite de Upload (MB)</label>
+            <input type="number" id="limite-upload" placeholder="Ex.: 50" min="1" max="500">
+        
+            <label for="config-cache">Tempo de Cache (em segundos)</label>
+            <input type="number" id="config-cache" placeholder="Ex.: 3600" min="0">
+        
+            <button>Salvar Configurações Técnicas</button>
+        
+            <!-- Modo de Manutenção -->
+            <h3>Modo de Manutenção</h3>
+            <label for="modo-manutencao">
+                <input type="checkbox" id="modo-manutencao"> Ativar Modo de Manutenção
+            </label>
+        
+            <label for="mensagem-manutencao">Mensagem de Manutenção</label>
+            <textarea id="mensagem-manutencao" rows="3" placeholder="Ex.: O sistema estará fora do ar para atualizações."></textarea>
+        
+            <button>Salvar Configurações de Manutenção</button>
+        </section>
+        
+    </main>
+</body>
+</html>
